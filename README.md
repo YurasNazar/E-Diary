@@ -7,13 +7,13 @@ It is designed to make you forget about old paper diaries. By using eDiary you o
 Just add your subjects, your timetable and instantaneously all your classmates will have the same on their devices. Register your grades, keep track of homework and your school life will never be the same!
 
 FUNCTIONALITIES:
-✔ Save homework
-✔ Save oral and written test dates
-✔ Add comments to different assignments (finally!)
-✔ Save your school timetable
-✔ Keep homework and timetable synchronized and shared with your classmates
-✔ Keep track of what homework you have already completed and what not
-✔ Register grades, compute averages and manage school terms
+- Save homework
+- Save oral and written test dates
+- Add comments to different assignments (finally!)
+- Save your school timetable
+- Keep homework and timetable synchronized and shared with your classmates
+- Keep track of what homework you have already completed and what not
+- Register grades, compute averages and manage school terms
 
 E-Diary is better than any other school diary application because it is synchronized with your classmates. Just register your class and invite your friends to join! We made everything super simple :-)
 
