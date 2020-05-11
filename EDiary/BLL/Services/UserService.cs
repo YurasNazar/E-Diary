@@ -21,7 +21,10 @@ namespace BLL.Services
 
         public IList<User> GetUsers()
         {
-            return _userRepository.Table.ToList();
+            var userList = new List<User>();
+            userList.Add(new User { Id = 1 });
+            return userList;
+            //return _userRepository.Table.ToList();
         }
     }
 }

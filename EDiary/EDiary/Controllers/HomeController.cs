@@ -25,7 +25,6 @@ namespace EDiary.Controllers
         }
         public ActionResult Details(int id)
         {
-            throw new Exception("Details not found");
             var model = new User();
             model = _userService.GetUserById(id);
 

@@ -6,6 +6,7 @@ using DAL.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,7 @@ namespace EDiary
         {
             services.AddDbContextPool<EDiaryDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("EDiaryDBConnection")));
             services.AddMvc();
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<EDiaryDbContext>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
@@ -46,6 +48,7 @@ namespace EDiary
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
