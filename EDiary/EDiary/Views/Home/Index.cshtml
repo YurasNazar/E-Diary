@@ -3,28 +3,20 @@
     ViewBag.Title = "Index";
 }
 
-<h1>Index</h1>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-    <table>
-        <thead>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
             <tr>
-                <th>ID</th>
+                <td>
+                    @user.Id
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in Model.Users)
-            {
-                <tr>
-                    <td>
-                        @user.Id
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</body>
-</html>
+        }
+    </tbody>
+</table>

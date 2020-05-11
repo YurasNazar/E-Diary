@@ -6,5 +6,6 @@ namespace BLL.Interfaces
     public interface IUserService
     {
         IList<User> GetUsers();
+        User GetUserById(int id);
     }
 }

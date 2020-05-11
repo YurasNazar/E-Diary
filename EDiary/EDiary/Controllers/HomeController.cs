@@ -1,4 +1,5 @@
 ﻿using BLL.Interfaces;
+using DAL.Entities;
 using EDiary.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,6 +21,19 @@ namespace EDiary.Controllers
         {
             var model = new HomeIndexViewModel();
             model.Users = _userService.GetUsers();
+            return View(model);
+        }
+        public ActionResult Details(int id)
+        {
+            throw new Exception("Details not found");
+            var model = new User();
+            model = _userService.GetUserById(id);
+
+            if (model == null) 
+            {
+                return View("UserNotFound");
+            }
+
             return View(model);
         }
     }

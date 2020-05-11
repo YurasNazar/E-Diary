@@ -14,6 +14,11 @@ namespace BLL.Services
             _userRepository = userRepository;
         }
 
+        public User GetUserById(int id)
+        {
+            return _userRepository.GetById(id);
+        }
+
         public IList<User> GetUsers()
         {
             return _userRepository.Table.ToList();
