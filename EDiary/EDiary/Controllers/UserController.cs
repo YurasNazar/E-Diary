@@ -3,7 +3,6 @@ using EDiary.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace EDiary.Controllers
 {
     public class UserController : Controller
@@ -36,6 +35,7 @@ namespace EDiary.Controllers
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
+
                 foreach (var error in result.Errors) 
                 {
                     ModelState.AddModelError("", error.Description);
@@ -63,7 +63,7 @@ namespace EDiary.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                ModelState.AddModelError(string.Empty, "Invalid Sign In Attempt");
             }
 
             return View(model);
