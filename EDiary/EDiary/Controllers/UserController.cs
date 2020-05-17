@@ -27,6 +27,7 @@ namespace EDiary.Controllers
         {
             if (ModelState.IsValid)
             {
+                //var userName = string.Concat(model.FirstName, " ", model.LastName);
                 var user = new IdentityUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
 

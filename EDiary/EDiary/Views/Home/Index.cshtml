@@ -2,8 +2,8 @@
 @{
     ViewBag.Title = "Index";
 }
-
-<header>
+<!-- For now delayed until completed functionality-->
+@*<header>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -11,25 +11,22 @@
             <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
         </ol>
         <div class="carousel-inner" role="listbox">
-            <!-- Slide One - Set the background image for this slide in the line below -->
             <div class="carousel-item active" style="background-image: url(../images/home/Slide_1.jpg)">
                 <div class="carousel-caption d-none d-md-block">
-                    @*<h3>First Slide</h3>
-                    <p>This is a description for the first slide.</p>*@
+                    <h3>First Slide</h3>
+                    <p>This is a description for the first slide.</p>
                 </div>
             </div>
-            <!-- Slide Two - Set the background image for this slide in the line below -->
             <div class="carousel-item" style="background-image: url(../images/home/Slide_2.jpg)">
                 <div class="carousel-caption d-none d-md-block">
-                    @*<h3>Second Slide</h3>
-                    <p>This is a description for the second slide.</p>*@
+                    <h3>Second Slide</h3>
+                    <p>This is a description for the second slide.</p>
                 </div>
             </div>
-            <!-- Slide Three - Set the background image for this slide in the line below -->
             <div class="carousel-item" style="background-image: url(../images/home/Slide_3.jpg)">
                 <div class="carousel-caption d-none d-md-block">
-                    @*<h3>Second Slide</h3>
-                    <p>This is a description for the second slide.</p>*@
+                    <h3>Second Slide</h3>
+                    <p>This is a description for the second slide.</p>
                 </div>
             </div>
         </div>
@@ -42,18 +39,15 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-</header>
+</header>*@
 
 <!-- Page Content -->
-<div class="container">
-
+<div class="container margin-top-3-5">
     <h1 class="my-4">Welcome to your personal Electronic Diary</h1>
-
-    <!-- Marketing Icons Section -->
     <div class="row">
         <div class="col-lg-4 mb-4">
             <div class="card h-100 border-radius-1">
-                <h4 class="card-header">Sharing Is Nice</h4>
+                <h4 class="card-header bg-blue-gradient">Sharing Is Nice</h4>
                 <div class="card-body">
                     <p class="card-text">
                         The main advantage of eDiary is that it allows you to synchronize in a simple way your homework, timetable, subjects and much more with all your classmates!
@@ -62,13 +56,14 @@
                     </p>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Learn More</a>
+                    
+                    <a class="btn btn-primary" asp-controller="User" asp-action="Register">Learn More</a>
                 </div>
             </div>
         </div>
         <div class="col-lg-4 mb-4">
             <div class="card h-100 border-radius-1">
-                <h4 class="card-header">More Than A Simple Diary</h4>
+                <h4 class="card-header bg-blue-gradient">More Than Diary</h4>
                 <div class="card-body">
                     <p class="card-text">
                         EDiary revolutionizes the idea of school diary offering all the features that you need in a single place!
@@ -78,13 +73,13 @@
                     </p>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Learn More</a>
+                    <a class="btn btn-primary" asp-controller="User" asp-action="Register">Learn More</a>
                 </div>
             </div>
         </div>
         <div class="col-lg-4 mb-4">
             <div class="card h-100 border-radius-1">
-                <h4 class="card-header">New And Modern</h4>
+                <h4 class="card-header bg-blue-gradient">New And Modern</h4>
                 <div class="card-body">
                     <p class="card-text">
                         Forget about the old and dusty paper diaries! You won't need them anymore!
@@ -93,7 +88,7 @@
                     </p>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Learn More</a>
+                    <a class="btn btn-primary" asp-controller="User" asp-action="Register">Learn More</a>
                 </div>
             </div>
         </div>
