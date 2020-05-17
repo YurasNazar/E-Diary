@@ -14,29 +14,81 @@
         <li class="breadcrumb-item">
             <a asp-controller="Home" asp-action="Index">Home</a>
         </li>
-        <li class="breadcrumb-item active">Blog Home 2</li>
+        <li class="breadcrumb-item active">To Do</li>
     </ol>
-
     <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mx-auto">
+            <div class="card card-filter my-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div class="form-label-group">
+                                <input class="form-control" id="description" placeholder="Description">
+                                <label class="cursor-pointer" for="description">Description</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div class="form-label-group">
+                                <input class="form-control" id="subject" placeholder="Subject">
+                                <label class="cursor-pointer" for="subject">Subject</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div class="form-label-group">
+                                <input class="form-control" id="status" placeholder="Status">
+                                <label class="cursor-pointer" for="status">Status</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div class="form-label-group">
+                                <input class="form-control" id="deadline" placeholder="Deadline">
+                                <label class="cursor-pointer" for="deadline">Deadline</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-right">
+                            <button class="btn btn-secondary font-weight-600">Clear</button>
+                            <button class="btn btn-primary font-weight-600">Apply Filter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" data-bind="visible: ToDos().length > 0 && !Loading()">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ul class="list-inline list-unstyled">
+                <li>
+                    Showing&nbsp;<span data-bind="text: 1 @*Pager.StartRecord*@"></span>
+                    to&nbsp;<span data-bind="text: 5 @*Pager.EndRecord*@"></span>
+                    of&nbsp;<span data-bind="text: 15 @*Pager.TotalCount*@"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row margin-bottom-2">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ul class="list-group" data-bind="visible: ToDos().length > 0 && !Loading(), foreach: ToDos">
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                            <label><strong>Name:</strong></label><br />
-                            <label class="control-label" data-bind="text: description"></label>
+                            <label class="control-label"> Description: </label><br />
+                            <span data-bind="text: description"></span>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                            <label><strong>Subject:</strong></label><br />
-                            <label class="control-label" data-bind="text: 'Математика'"></label>
+                            <label class="control-label"> Subject: </label><br />
+                            <span data-bind="text: 'Математика'"></span>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                            <label><strong>Status:</strong></label><br />
-                            <label class="control-label" data-bind="text: 'Не виконано'"></label>
+                            <label class="control-label"> Status: </label><br />
+                            <span data-bind="text: 'Не виконано'"></span>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                            <label><strong>Deadline:</strong></label><br />
-                            <label class="control-label" data-bind="text: deadLine"></label>
+                            <label class="control-label"> Deadline: </label><br />
+                            <span data-bind="text: deadLine"></span>
                         </div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-align-center">
                             <a class="cursor-pointer"><i class="font-size-1-5 padding-top-50 fas fa-share-square"></i></a>
@@ -46,13 +98,16 @@
             </ul>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-8 text-center" @*data-bind="with: Pager, visible: !Loading()*@>
+            <partial name="_Pager" />
+        </div>
+    </div>
 </div>
-
 @section KnockoutContext {
     <script type="text/javascript">
         ToDoItemsList.ContainerId = '#todo-list';
         ToDoItemsList.ToDos = @Html.Raw(Json.Serialize(Model.ToDoItems));
-
         ToDoItemsList.Init();
     </script>
 }

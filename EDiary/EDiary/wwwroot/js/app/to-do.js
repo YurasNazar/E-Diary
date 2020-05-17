@@ -9,7 +9,6 @@ ToDoItemsList.Mapping = {
 };
 
 ToDoItemsList.ToDo = function (data) {
-    debugger;
     var self = this;
 
     ko.mapping.fromJS(data, {}, self);
@@ -39,7 +38,6 @@ ToDoItemsList.ToDoViewModel = function () {
 
 
     self.Init = function () {
-        debugger;
         ko.mapping.fromJS(ToDoItemsList.ToDos, ToDoItemsList.Mapping.ToDos, self.ToDos);
 
         //self.Filter = new YounifiAdminOrdersList.FilterViewModel(YounifiAdminOrdersList.Filter, false);

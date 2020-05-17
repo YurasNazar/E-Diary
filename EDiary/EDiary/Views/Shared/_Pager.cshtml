@@ -1,0 +1,71 @@
+﻿@{
+    Layout = null;
+}
+<div class="padding-top-15" data-bind="visible: TotalCount() === 0">No matches found</div>
+<nav data-bind="visible: TotalCount() > 0">
+    <ul class="pagination" data-bind="visible: (HasPreviousPage() || HasNextPage())">
+        <li data-bind="css: { 'disabled' : !HasPreviousPage() }">
+            <!-- ko if: HasPreviousPage() -->
+            <a href="#" data-bind="click: function() {PageIndex(PageIndex()-1); $parent.Load !=null? $parent.Load(): $root.Load();}, enable: HasPreviousPage()">&laquo;</a>
+            <!-- /ko -->
+            <!-- ko ifnot: HasPreviousPage() -->
+            <span>&laquo;</span>
+            <!-- /ko -->
+        </li>
+        <!-- ko foreach:{ data: Pages, as: 'page' }   -->
+        <li data-bind="css: { 'active' : ($parent.PageIndex()+1 == page)}" class="active"><a href="#" data-bind="text: page, click: function() { $parent.PageIndex(page-1); $parent.Load !=null? $parent.Load(): $root.Load(); }">1</a></li>
+        <!-- /ko -->
+        <li data-bind="css: { 'disabled' : !HasNextPage() }">
+            <!-- ko if: HasNextPage() -->
+            <a href="#" data-bind="click: function() {PageIndex(PageIndex()+1); Load !=null? Load(): $root.Load();},enable:HasNextPage() ">&raquo;</a>
+            <!-- /ko -->
+            <!-- ko ifnot: HasNextPage() -->
+            <span>&raquo;</span>
+            <!-- /ko -->
+        </li>
+    </ul>
+</nav>
+
+<script>
+    var PagerMapping = { 'ignore': ["Load", "Pages", "StartRecord", "EndRecord"] };
+
+    function PagerViewModel() {
+        var self = this;
+
+        self.PageSize = ko.observable(0);
+        self.PageIndex = ko.observable(0);
+        self.TotalPages = ko.observable(0);
+        self.HasNextPage = ko.observable(0);
+        self.HasPreviousPage = ko.observable(0);
+        self.TotalCount = ko.observable(0);
+
+        //defines the number of visible pages to the left and to the right of the active one
+        self.PageSlide = ko.observable(1);
+
+        self.Load = null;
+
+        self.Pages = ko.computed(function () {
+            var pageNum = self.PageIndex() + 1;
+            var pageFrom = Math.max(1, pageNum - self.PageSlide());
+            var pageTo = Math.min(self.TotalPages(), pageNum + self.PageSlide());
+            pageFrom = Math.max(1, Math.min(pageTo - self.PageSlide(), pageFrom));
+            pageTo = Math.min(self.TotalPages(), Math.max(pageFrom + self.PageSlide(), pageNum == 1 ? pageTo + self.PageSlide() : pageTo));
+
+            var result = [];
+            for (var i = pageFrom; i <= pageTo; i++) {
+                result.push(i);
+            }
+
+            return result;
+        });
+
+        self.StartRecord = ko.pureComputed(function () {
+            return (self.PageIndex() * self.PageSize()) + 1;
+        });
+
+        self.EndRecord = ko.pureComputed(function () {
+            var end = ((self.PageIndex() + 1) * self.PageSize());
+            return (end > self.TotalCount()) ? self.TotalCount() : end;
+        });
+    };
+</script>
