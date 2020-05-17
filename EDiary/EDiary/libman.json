@@ -13,6 +13,15 @@
     {
       "library": "font-awesome@5.13.0",
       "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "knockout@3.5.1",
+      "destination": "wwwroot/lib/knockout/"
     }
-  ]
+  ,
+{
+  "library": "knockout.mapping@2.4.1",
+  "destination": "wwwroot/lib/knockout.mapping/"
+}
+]
 }

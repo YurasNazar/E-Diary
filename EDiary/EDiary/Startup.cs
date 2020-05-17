@@ -1,11 +1,9 @@
 using BLL.Interfaces;
 using BLL.Services;
 using DAL.DatabaseContext;
-using DAL.Entities;
 using DAL.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +30,7 @@ namespace EDiary
             services.AddMvc();
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<EDiaryDbContext>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IToDoService, ToDoService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
 

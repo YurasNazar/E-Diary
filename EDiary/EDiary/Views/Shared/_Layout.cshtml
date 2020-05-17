@@ -14,12 +14,14 @@
 
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/knockout/knockout-latest.js"></script>
+    <script src="~/lib/knockout.mapping/knockout.mapping.js"></script>
 
     <title>@ViewBag.Title</title>
 
 </head>
 <body>
-    <partial name="_Navigation"/>
+    <partial name="_Navigation" />
     <div>
         @RenderBody()
     </div>
@@ -28,6 +30,11 @@
     @if (IsSectionDefined("Scripts"))
     {
         @RenderSection("Scripts", required: false)
+    }
+
+    @if (IsSectionDefined("KnockoutContext"))
+    {
+        @RenderSection("KnockoutContext", required: false)
     }
 </body>
 </html>

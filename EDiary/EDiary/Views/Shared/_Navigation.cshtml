@@ -14,8 +14,12 @@
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <li class="nav-item text-align-center">
+                        <i class="fas fa-calendar-week"></i>
+                        <a class="nav-link text-dark padding-0" href="">Calendar</a>
+                    </li>
+                    <li class="nav-item text-align-center">
                         <i class="fas fa-th-list"></i>
-                        <a class="nav-link text-dark padding-0" href="">To Do</a>
+                        <a class="nav-link text-dark padding-0" asp-controller="ToDo" asp-action="Index">To Do</a>
                     </li>
                     <li class="nav-item text-align-center">
                         <i class="fas fa-book"></i>

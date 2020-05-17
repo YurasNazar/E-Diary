@@ -17,12 +17,14 @@ namespace EDiary.Controllers
         {
             _userService = userService;
         }
+
         public ActionResult Index() 
         {
             var model = new HomeIndexViewModel();
             model.Users = _userService.GetUsers();
             return View(model);
         }
+
         public ActionResult Details(int id)
         {
             var model = new User();
