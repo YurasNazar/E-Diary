@@ -4,7 +4,7 @@
 
 .bg-blue-gradient {
     background: #007bff;
-    background: linear-gradient(to right, #0062E6, #33AEFF);
+    background: linear-gradient(to right, #0062E6, #337cff);
 }
 
 .bg-blue-linear {
@@ -197,6 +197,10 @@
     margin-bottom: 4em;
 }
 
+.margin-left-1-5 {
+    margin-left: 1.5rem;
+}
+
 .list-unstyled {
   padding-left: 0;
   list-style: none;
@@ -377,4 +381,8 @@
   color: #BDC3C7;
   background-color: #fff;
   cursor: not-allowed;
+}
+
+.user-navbar-dropdown {
+    margin-right: 119px;
 }

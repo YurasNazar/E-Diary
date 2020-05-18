@@ -15,7 +15,7 @@ ToDoItemsList.ToDo = function (data) {
 };
 
 ToDoItemsList.FilterMapping = {
-    'ignore': ["Clear", "OnlyNumber"]
+    'ignore': ["Clear"]
 };
 
 ToDoItemsList.PagerMapping = {
@@ -25,65 +25,45 @@ ToDoItemsList.PagerMapping = {
 ToDoItemsList.ToDoViewModel = function () {
     var self = this;
 
-    //self.Pager = new PagerViewModel();
+    self.Pager = new PagerViewModel();
     self.Filter = null;
     self.ToDos = ko.observableArray();
     self.Loading = ko.observable(false);
     self.ShowFilter = ko.observable(true);
     self.Statuses = ko.observableArray([]);
-    self.OrderReferences = ko.observableArray([]);
     self.SelectedFilters = ko.observableArray();
     self.TagsIsFilled = ko.observable(true);
     self.FilterErrors = null;
 
 
     self.Init = function () {
+        debugger;
         ko.mapping.fromJS(ToDoItemsList.ToDos, ToDoItemsList.Mapping.ToDos, self.ToDos);
+        self.Filter = new ToDoItemsList.FilterViewModel(ToDoItemsList.Filter, true);
+        ko.mapping.fromJS(ToDoItemsList.Pager, {}, self.Pager);
 
-        //self.Filter = new YounifiAdminOrdersList.FilterViewModel(YounifiAdminOrdersList.Filter, false);
-        //self.AppliedFilter = new YounifiAdminOrdersList.FilterViewModel(YounifiAdminOrdersList.Filter);
-        //ko.mapping.fromJS(YounifiAdminOrdersList.Pager, {}, self.Pager);
-        //self.DefaultFilter = new YounifiAdminOrdersList.FilterViewModel(YounifiAdminOrdersList.Filter, true);
-        //ko.mapping.fromJS(YounifiAdminOrdersList.Statuses, {}, self.Statuses);
-        //ko.mapping.fromJS(YounifiAdminOrdersList.Councils, {}, self.Councils);
-        //ko.mapping.fromJS(YounifiAdminOrdersList.OrderReferences, {}, self.OrderReferences);
-
-        //self.Pager.Load = self.Load;
+        self.Pager.Load = self.Load;
     };
 
-    //self.Load = function (fromApply) {
-    //    var data = {
-    //        filter: fromApply
-    //            ? ko.mapping.toJS(self.Filter, YounifiAdminOrdersList.FilterMapping)
-    //            : ko.mapping.toJS(self.AppliedFilter, YounifiAdminOrdersList.FilterMapping),
-    //        pager: ko.mapping.toJS(self.Pager, YounifiAdminOrdersList.PagerMapping)
-    //    };
+    self.Load = function (fromApply) {
+        var data = {
+            filter: ko.mapping.toJS(self.Filter, ToDoItemsList.FilterMapping),
+            pager: ko.mapping.toJS(self.Pager, ToDoItemsList.PagerMapping)
+        };
 
-    //    $.ajax({
-    //        url: YounifiAdminOrdersList.GetOrdersUrl,
-    //        type: "POST",
-    //        dataType: "json",
-    //        data: data,
-    //        busy: self.Loading
-    //    }).done(function (result) {
-    //        if (result && result.success) {
-    //            ko.mapping.fromJS(result.data.orders, YounifiAdminOrdersList.Mapping.Orders, self.Orders);
-    //            ko.mapping.fromJS(result.data.pager, {}, self.Pager);
-
-    //            history.replaceState({}, null, result.redirect);
-
-    //            if (fromApply || !self.TagsIsFilled()) {
-    //                self.FillFilterTags();
-    //                self.AppliedFilter = new YounifiAdminOrdersList.FilterViewModel(self.Filter, false);
-    //                self.TagsIsFilled(true);
-    //                self.ShowFilter(self.SelectedFilters().length === 0);
-    //            }
-
-    //        } else if (result && result.AllErrors) {
-    //            notify.fail(result.AllErrors, true);
-    //        }
-    //    });
-    //};
+        $.ajax({
+            url: ToDoItemsList.GetToDosUrl,
+            type: "POST",
+            dataType: "json",
+            data: data,
+        }).done(function (result) {
+            if (result && result.success) {
+                ko.mapping.fromJS(result.data.ToDos, ToDoItemsList.Mapping.ToDos, self.ToDos);
+                ko.mapping.fromJS(result.data.Pager, {}, self.Pager);
+                scrollToTop();
+            }
+        });
+    };
 
     //self.Details = function (model) {
     //    const url = YounifiAdminOrdersList.OrderDetailsUrl + "/" + model.OrderId();
@@ -203,49 +183,19 @@ ToDoItemsList.ToDoViewModel = function () {
     self.Init();
 };
 
-//YounifiAdminOrdersList.FilterViewModel = function (filter, isDefault) {
-//    var self = this;
-//    self.StatusId = ko.observable(isDefault ? 0 : filter.StatusId);
-//    self.PersonFirstName = ko.observable(isDefault ? null : filter.PersonFirstName);
-//    self.PersonLastName = ko.observable(isDefault ? null : filter.PersonLastName);
-//    self.CouncilName = ko.observable(isDefault ? null : filter.CouncilName);
-//    self.Provider = ko.observable(isDefault ? null : filter.Provider);
-//    self.Postcode = ko.observable(isDefault ? null : filter.Postcode);
-//    self.StoreId = ko.observable(isDefault ? null : filter.CouncilId);
-//    self.OrderNumber = ko.observable(isDefault ? null : filter.OrderNumber).extend({ max: YounifiAdminOrdersList.OrderNumberMaxValue });
-//    self.SeeFromDate = ko.observable();
-//    self.DateFrom = ko.observable(isDefault ? null : filter.DateFrom);
-//    self.DateTo = ko.observable(isDefault ? null : filter.DateTo);
-//    self.MinFromDate = ko.observable();
-//    self.OrderReferenceKey = ko.observable(isDefault ? YounifiAdminOrdersList.OrderReferenceKeyDefaultValue : filter.OrderReferenceKey);
-//    self.OrderReferenceValue = ko.observable(isDefault ? null : filter.OrderReferenceValue);
-//    self.OrderReferenceName = ko.observable(YounifiAdminOrdersList.OrderReferenceNameDefaultValue);
+ToDoItemsList.FilterViewModel = function (filter, isDefault) {
+    var self = this;
 
-//    self.OnlyNumber = function () {
-//        if ((self.OrderReferenceKey() == 50 || self.OrderReferenceKey() == 40)) {
-//            return keyPressIntNumbersOnly;
-//        }
-//    };
+    self.StatusId = ko.observable(isDefault ? 0 : filter.StatusId);
+    self.Description = ko.observable(isDefault ? null : filter.PersonFirstName);
+    self.Deadline = ko.observable(isDefault ? null : filter.DateFrom);
 
-//    self.OrderReferenceKey.subscribe(function () {
-//        self.OrderReferenceValue(null);
-//    });
-
-//    self.Clear = function () {
-//        self.StatusId(null);
-//        self.PersonFirstName(null);
-//        self.PersonLastName(null);
-//        self.CouncilName(null);
-//        self.Provider(null);
-//        self.Postcode(null);
-//        self.DateFrom(null);
-//        self.DateTo(null);
-//        self.StoreId(null);
-//        self.OrderReferenceKey(YounifiAdminOrdersList.OrderReferenceKeyDefaultValue);
-//        self.OrderReferenceValue(null);
-//        self.OrderReferenceName(YounifiAdminOrdersList.OrderReferenceNameDefaultValue);
-//    };
-//};
+    self.Clear = function () {
+        self.StatusId(null);
+        self.Description(null);
+        self.Deadline(null);
+    };
+};
 
 ToDoItemsList.Init = function () {
     const viewModel = new ToDoItemsList.ToDoViewModel();

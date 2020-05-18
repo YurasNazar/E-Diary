@@ -1,6 +1,6 @@
 ﻿using BLL.Interfaces;
 using DAL.Entities;
-using EDiary.ViewModels;
+using DAL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

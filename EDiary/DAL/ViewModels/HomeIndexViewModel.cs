@@ -1,8 +1,7 @@
 ﻿using DAL.Entities;
 using System.Collections.Generic;
 
-
-namespace EDiary.ViewModels
+namespace DAL.ViewModels
 {
     public class HomeIndexViewModel
     {

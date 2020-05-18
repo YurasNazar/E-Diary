@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.DatabaseContext
 {
-    public class EDiaryDbContext : IdentityDbContext
+    public class EDiaryDbContext : IdentityDbContext<ApplicationUser>
     {
         public EDiaryDbContext(DbContextOptions<EDiaryDbContext> options)
             : base(options)

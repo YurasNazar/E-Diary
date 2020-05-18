@@ -1,6 +1,8 @@
+using BLL.Factories;
 using BLL.Interfaces;
 using BLL.Services;
 using DAL.DatabaseContext;
+using DAL.Entities;
 using DAL.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 
 namespace EDiary
 {
@@ -28,7 +31,8 @@ namespace EDiary
         {
             services.AddDbContextPool<EDiaryDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("EDiaryDBConnection")));
             services.AddMvc();
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<EDiaryDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<EDiaryDbContext>();
+            services.AddScoped<IToDoModelFactory, ToDoModelFactory>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IToDoService, ToDoService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

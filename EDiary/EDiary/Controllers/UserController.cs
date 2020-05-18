@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
-using EDiary.ViewModels;
+using DAL.Entities;
+using DAL.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,10 +8,10 @@ namespace EDiary.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public UserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -27,8 +28,17 @@ namespace EDiary.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var userName = string.Concat(model.FirstName, " ", model.LastName);
-                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+                var fullName = string.Concat(model.FirstName, " ", model.LastName);
+
+                var user = new ApplicationUser 
+                {
+                    FisrtName = model.FirstName,
+                    LastName = model.LastName, 
+                    FullName = fullName,
+                    UserName = model.Email,
+                    Email = model.Email 
+                };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
@@ -70,7 +80,7 @@ namespace EDiary.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

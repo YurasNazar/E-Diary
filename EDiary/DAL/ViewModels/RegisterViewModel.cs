@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EDiary.ViewModels
+namespace DAL.ViewModels
 {
     public class RegisterViewModel
     {

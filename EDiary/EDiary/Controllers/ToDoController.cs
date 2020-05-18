@@ -1,25 +1,36 @@
-﻿using BLL.Interfaces;
-using EDiary.ViewModels;
+﻿using BLL.Factories;
+using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EDiary.Controllers
 {
-    public class ToDoController : Controller
+    public class ToDoController : BaseController
     {
-        private readonly IToDoService _toDoService;
+        private readonly IToDoModelFactory _toDoModelFactory;
 
-        public ToDoController(IToDoService toDoService)
+        public ToDoController(IToDoModelFactory toDoModelFactory)
         {
-            _toDoService = toDoService;
+            _toDoModelFactory = toDoModelFactory;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(ToDoFilterModel filter, SimplePagerModel pager)
         {
-            var model = new ToDoViewModel {
-                ToDoItems = _toDoService.GetToDosList()
-            };
+            var model = _toDoModelFactory.PrepareToDoViewModel(filter, pager);
 
             return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult GetToDos(ToDoFilterModel filter, SimplePagerModel pager)
+        {
+            var model = _toDoModelFactory.PrepareToDoViewModel(filter, pager);
+
+            return CreateJsonResult(true, new
+            {
+                ToDos = model.ToDoItems,
+                Pager = model.Paging
+            });
         }
     }
 }
