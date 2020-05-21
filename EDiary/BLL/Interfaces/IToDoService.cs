@@ -7,9 +7,7 @@ namespace BLL.Interfaces
 {
     public interface IToDoService
     {
-        IList<ToDo> GetToDosList();
-
-        IPagedList<ToDo> SearchToDos(DateTime? deadline = null, string description = null,
-            int pageIndex = 0, int pageSize = int.MaxValue);
+        IPagedList<Task> SearchToDos(DateTime? deadline = null, string description = null,
+            int pageIndex = 0, int pageSize = int.MaxValue, string userId = "");
     }
 }

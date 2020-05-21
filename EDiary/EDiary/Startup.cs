@@ -33,7 +33,7 @@ namespace EDiary
             services.AddMvc();
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<EDiaryDbContext>();
             services.AddScoped<IToDoModelFactory, ToDoModelFactory>();
-            services.AddScoped<IUserService, UserService>();
+            //services.AddScoped<IUserService, UserService>();
             services.AddScoped<IToDoService, ToDoService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }

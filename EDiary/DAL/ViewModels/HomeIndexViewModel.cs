@@ -5,6 +5,5 @@ namespace DAL.ViewModels
 {
     public class HomeIndexViewModel
     {
-        public IList<User> Users { get; set; }
     }
 }

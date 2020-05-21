@@ -16,12 +16,12 @@ namespace BLL.Factories
             _toDoService = toDoService;
         }
 
-        public ToDoViewModel PrepareToDoViewModel(ToDoFilterModel filter, SimplePagerModel pager)
+        public ToDoViewModel PrepareToDoViewModel(ToDoFilterModel filter, SimplePagerModel pager, string userId)
         {
             var pagedList = _toDoService.SearchToDos(
                 deadline: filter.Deadline,
                 description: filter.Description,
-                pageIndex: pager.PageIndex, pageSize: pager.PageSize > 0 ? pager.PageSize : Constants.Paging.DefaultPageSize);
+                pageIndex: pager.PageIndex, pageSize: pager.PageSize > 0 ? pager.PageSize : Constants.Paging.DefaultPageSize, userId);
 
             var orderListModel = new ToDoViewModel
             {
@@ -33,9 +33,16 @@ namespace BLL.Factories
             return orderListModel;
         }
 
-        public ToDo PrepareToDoModel(ToDo todo)
+        public ToDoItem PrepareToDoModel(Task todo)
         {
-            return todo;
+            return new ToDoItem
+            {
+                Name = todo.Name,
+                Description = todo.Description,
+                StatusId = todo.StatusId,
+                //SubjectId = todo.SubjectId,
+                DeadLine = todo.DeadLine
+            };
         }
     }
 }

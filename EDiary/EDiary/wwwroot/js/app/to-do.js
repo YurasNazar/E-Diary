@@ -37,7 +37,6 @@ ToDoItemsList.ToDoViewModel = function () {
 
 
     self.Init = function () {
-        debugger;
         ko.mapping.fromJS(ToDoItemsList.ToDos, ToDoItemsList.Mapping.ToDos, self.ToDos);
         self.Filter = new ToDoItemsList.FilterViewModel(ToDoItemsList.Filter, true);
         ko.mapping.fromJS(ToDoItemsList.Pager, {}, self.Pager);
@@ -45,7 +44,7 @@ ToDoItemsList.ToDoViewModel = function () {
         self.Pager.Load = self.Load;
     };
 
-    self.Load = function (fromApply) {
+    self.Load = function () {
         var data = {
             filter: ko.mapping.toJS(self.Filter, ToDoItemsList.FilterMapping),
             pager: ko.mapping.toJS(self.Pager, ToDoItemsList.PagerMapping)

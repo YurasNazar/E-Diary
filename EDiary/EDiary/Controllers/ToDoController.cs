@@ -1,5 +1,8 @@
 ﻿using BLL.Factories;
+using DAL.Entities;
 using DAL.Models;
+using EDiary.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EDiary.Controllers
@@ -7,16 +10,19 @@ namespace EDiary.Controllers
     public class ToDoController : BaseController
     {
         private readonly IToDoModelFactory _toDoModelFactory;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ToDoController(IToDoModelFactory toDoModelFactory)
+        public ToDoController(IToDoModelFactory toDoModelFactory, UserManager<ApplicationUser> userManager)
         {
             _toDoModelFactory = toDoModelFactory;
+            _userManager = userManager;
         }
 
         [HttpGet]
         public IActionResult Index(ToDoFilterModel filter, SimplePagerModel pager)
         {
-            var model = _toDoModelFactory.PrepareToDoViewModel(filter, pager);
+            var userId = User.GetLoggedInUserId<string>();
+            var model = _toDoModelFactory.PrepareToDoViewModel(filter, pager, userId);
 
             return View(model);
         }
@@ -24,7 +30,8 @@ namespace EDiary.Controllers
         [HttpPost]
         public JsonResult GetToDos(ToDoFilterModel filter, SimplePagerModel pager)
         {
-            var model = _toDoModelFactory.PrepareToDoViewModel(filter, pager);
+            var userId = User.GetLoggedInUserId<string>();
+            var model = _toDoModelFactory.PrepareToDoViewModel(filter, pager, userId);
 
             return CreateJsonResult(true, new
             {

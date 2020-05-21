@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace BLL.Interfaces
 {
-    public interface IUserService
-    {
-        IList<User> GetUsers();
-        User GetUserById(int id);
-    }
+    //public interface IUserService
+    //{
+    //    IList<User> GetUsers();
+    //    User GetUserById(int id);
+    //}
 }

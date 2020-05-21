@@ -5,6 +5,6 @@ namespace BLL.Factories
 {
     public interface IToDoModelFactory
     {
-        ToDoViewModel PrepareToDoViewModel(ToDoFilterModel filter, SimplePagerModel pager);
+        ToDoViewModel PrepareToDoViewModel(ToDoFilterModel filter, SimplePagerModel pager, string userId);
     }
 }

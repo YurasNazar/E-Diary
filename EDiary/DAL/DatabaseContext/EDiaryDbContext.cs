@@ -13,5 +13,7 @@ namespace DAL.DatabaseContext
         }
 
         public DbSet<ToDo> ToDos { get; set; }
+        public DbSet<Task> Tasks { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
     }
 }

@@ -1,3 +1,3 @@
-﻿var scrollToTop = function {
-    $(window).scrollTop(position);
-}
+﻿var scrollToTop = function () {
+    $(window).scrollTop(0);
+};

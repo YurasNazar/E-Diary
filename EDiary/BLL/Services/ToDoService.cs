@@ -2,40 +2,42 @@
 using BLL.PagedList;
 using DAL.Entities;
 using DAL.Repository;
+using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace BLL.Services
 {
     public class ToDoService : IToDoService
     {
-        private readonly IRepository<ToDo> _toDoRepository;
-        public ToDoService(IRepository<ToDo> toDoRepository)
+        private readonly IRepository<Task> _taskRepository;
+        private readonly IRepository<Subject> _subjectRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public ToDoService(IRepository<Task> taskRepository,
+                           IRepository<Subject> subjectRepository,
+                           UserManager<ApplicationUser> userManager)
         {
-            _toDoRepository = toDoRepository;
+            _userManager = userManager;
+            _taskRepository = taskRepository;
+            _subjectRepository = subjectRepository;
         }
-        public IList<ToDo> GetToDosList()
+
+        public IPagedList<Task> SearchToDos(DateTime? deadline = null, string description = null, int pageIndex = 0, int pageSize = int.MaxValue, string userId = "")
         {
-            var toDos = _toDoRepository.Table;
-            var toDosList = toDos.ToList();
-            return toDosList;
-        }
+            var query = GetSearchOrdersQuery(deadline, description, pageIndex, pageSize, userId);
 
-        public IPagedList<ToDo> SearchToDos(DateTime? deadline = null, string description = null, int pageIndex = 0, int pageSize = int.MaxValue)
-        {
-            var query = GetSearchOrdersQuery(deadline, description, pageIndex, pageSize);
-
-            query = query.OrderByDescending(o => o.DeadLine);
-
-            //database layer paging
-            return new PagedList<ToDo>(query, pageIndex, pageSize);
+            return new PagedList<Task>(query, pageIndex, pageSize);
 
         }
 
-        private IQueryable<ToDo> GetSearchOrdersQuery(DateTime? deadline, string description, int pageIndex, int pageSize)
+        private IQueryable<Task> GetSearchOrdersQuery(DateTime? deadline, string description, int pageIndex, int pageSize, string userId)
         {
-            var query = _toDoRepository.TableNoTracking;
+            var query = _taskRepository.TableNoTracking;
+
+            //query = query.Join(_subjectRepository.TableNoTracking,
+            //    task => task.SubjectId,
+            //    subject => subject.Name);
 
             if (!string.IsNullOrWhiteSpace(description))
             {
@@ -46,6 +48,10 @@ namespace BLL.Services
             {
                 query = query.Where(x => x.DeadLine <= deadline.Value);
             }
+
+            query = query.Where(x => x.UserId == userId);
+
+            query = query.OrderBy(x => x.DeadLine);
 
             return query;
         }

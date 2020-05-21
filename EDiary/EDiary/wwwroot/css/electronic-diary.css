@@ -149,6 +149,10 @@
     min-height: 600px;
 }
 
+.flex-card {
+    min-height: 525px;
+}
+
 .control-label {
     font-weight: 700;
 }
@@ -240,7 +244,7 @@
   padding: 6px 12px;
   line-height: 1.375;
   text-decoration: none;
-  color: #1FA598;
+  color: #0062E6;
   background-color: #fff;
   border: 1px solid #BDC3C7;
   margin-left: -1px;
@@ -263,7 +267,7 @@
 .pagination > li > span:hover,
 .pagination > li > span:focus {
   z-index: 2;
-  color: #1FA598;
+  color: #0062E6;
   background-color: #bce4e0;
   border-color: #c8c8c9;
 }
@@ -274,8 +278,8 @@
 .pagination > .active > span:focus {
   z-index: 3;
   color: #fff;
-  background-color: #1FA598;
-  border-color: #1FA598;
+  background-color: #0062E6;
+  border-color: #0062E6;
   cursor: default;
 }
 
@@ -385,4 +389,80 @@
 
 .user-navbar-dropdown {
     margin-right: 119px;
+}
+
+.card-label {
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    font-size: 1.375rem;
+    font-weight: 400;
+    line-height: 1.75rem;
+    color: #3c4043;
+}
+
+.card-status {
+    color: #d50000;
+}
+
+.add-create-button {
+    background: white;
+    color: black;
+    border-color: lightgray;
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: .25px;
+}
+
+.add-create-button-icon {
+    font-size: 1.1rem;
+    margin-right: 0.4rem;
+}
+
+.pad-left-none {
+    padding-left: 0;
+}
+
+.pad-right-none {
+    padding-right: 0;
+}
+
+.mark-as-complete-button {
+    border-color: lightgray;
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: .25px;
+}
+
+.task-name-title {
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 2.5rem;
+}
+
+.task-points {
+    letter-spacing: .01785714em;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    color: #3c4043;
+}
+
+.task-author {
+    color: rgba(0,0,0,0.87);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+}
+
+.task-date-creation {
+    color: rgba(0,0,0,0.87);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+}
+
+.padding-left-0-6 {
+    padding-left: .6rem;
 }
