@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Calendar";
+}
+@section Scripts
+{
+    <script src="~/js/app/datepicker.js"></script>
+    <script src="~/js/app/calendar.js"></script>
+    <script src="~/lib/moment.js/moment.js"></script>
+}
+@section KnockoutContext {
+    <script type="text/javascript">
+        CalendarDayItemsList.ContainerId = '#calendar';
+        CalendarDayItemsList.GetCalendarDayItemsUrl = "@Html.Raw(Url.Action("GetCalendarDayItems"))";
+        CalendarDayItemsList.Init();
+    </script>
+}
+
+<div class="container flex-card" id="calendar">
+    <ol class="breadcrumb mt-4 mb-3">
+        <li class="breadcrumb-item">
+            <a asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item active">Calendar</li>
+    </ol>
+    <h1 class="mb-3">Your calendar</h1>
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="form-group width-50">
+                <div class="relative">
+                    <input id="calendar-date" type="text" class="form-control cursor-pointer" placeholder="Select a Date" data-format="mm/dd/yyyy" data-bind="value: CalendarDay">
+                    <span class="ediary-datepicker cursor-pointer"><i class="fas fa-calendar-alt"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 container">
+        <div class="row row-striped">
+            <div class="col-2 text-right">
+                <h1 class="display-4"><span class="badge badge-secondary">23</span></h1>
+                <h2>OCT</h2>
+            </div>
+            <div class="col-10">
+                <h3 class="text-uppercase"><strong>Ice Cream Social</strong></h3>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> Monday</li>
+                    <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> 12:30 PM - 2:00 PM</li>
+                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Cafe</li>
+                </ul>
+                <p>Lorem ipsum dolsit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+        <div class="row row-striped">
+            <div class="col-2 text-right">
+                <h1 class="display-4"><span class="badge badge-secondary">27</span></h1>
+                <h2>OCT</h2>
+            </div>
+            <div class="col-10">
+                <h3 class="text-uppercase"><strong>Operations Meeting</strong></h3>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> Friday</li>
+                    <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> 2:30 PM - 4:00 PM</li>
+                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Room 4019</li>
+                </ul>
+                <p>Lorem ipsum dolsit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+        <div class="row row-striped">
+            <div class="col-2 text-right">
+                <h1 class="display-4"><span class="badge badge-secondary">27</span></h1>
+                <h2>OCT</h2>
+            </div>
+            <div class="col-10">
+                <h3 class="text-uppercase"><strong>Operations Meeting</strong></h3>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> Friday</li>
+                    <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> 2:30 PM - 4:00 PM</li>
+                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Room 4019</li>
+                </ul>
+                <p>Lorem ipsum dolsit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -19,8 +19,9 @@ namespace BLL.Factories
         public ToDoViewModel PrepareToDoViewModel(ToDoFilterModel filter, SimplePagerModel pager, string userId)
         {
             var pagedList = _toDoService.SearchToDos(
+                subjects: filter.Subjects,
                 deadline: filter.Deadline,
-                description: filter.Description,
+                name: filter.Name,
                 pageIndex: pager.PageIndex, pageSize: pager.PageSize > 0 ? pager.PageSize : Constants.Paging.DefaultPageSize, userId);
 
             var orderListModel = new ToDoViewModel

@@ -23,15 +23,15 @@ namespace BLL.Services
             _subjectRepository = subjectRepository;
         }
 
-        public IPagedList<Task> SearchToDos(DateTime? deadline = null, string description = null, int pageIndex = 0, int pageSize = int.MaxValue, string userId = "")
+        public IPagedList<Task> SearchToDos(string subjects = null, DateTime? deadline = null, string name = null, int pageIndex = 0, int pageSize = int.MaxValue, string userId = "")
         {
-            var query = GetSearchOrdersQuery(deadline, description, pageIndex, pageSize, userId);
+            var query = GetSearchOrdersQuery(subjects, deadline, name, pageIndex, pageSize, userId);
 
             return new PagedList<Task>(query, pageIndex, pageSize);
 
         }
 
-        private IQueryable<Task> GetSearchOrdersQuery(DateTime? deadline, string description, int pageIndex, int pageSize, string userId)
+        private IQueryable<Task> GetSearchOrdersQuery(string subjects, DateTime? deadline, string name, int pageIndex, int pageSize, string userId)
         {
             var query = _taskRepository.TableNoTracking;
 
@@ -39,9 +39,9 @@ namespace BLL.Services
             //    task => task.SubjectId,
             //    subject => subject.Name);
 
-            if (!string.IsNullOrWhiteSpace(description))
+            if (!string.IsNullOrWhiteSpace(name))
             {
-                query = query.Where(x => x.Description.ToLower().Contains(description));
+                query = query.Where(x => x.Name.ToLower().Contains(name));
             }
 
             if (deadline.HasValue)

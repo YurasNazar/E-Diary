@@ -79,119 +79,32 @@ ToDoItemsList.ToDoViewModel = function () {
     //    setLocation(url);
     //};
 
-    //self.ChangeFilter = function () {
-    //    self.SelectedFilters([]);
-    //    self.ShowFilter(true);
-    //};
+    self.ApplyFilter = function () {
+        self.Pager.PageIndex(0);
+        self.Load();
+    };
 
-    //self.ApplyFilter = function () {
-    //    self.Pager.PageIndex(0);
-    //    self.Load(true);
-    //};
-
-    //self.ClearFilter = function () {
-    //    self.Pager.PageIndex(0);
-    //    self.Filter.Clear();
-    //    self.AppliedFilter = new YounifiAdminOrdersList.FilterViewModel(YounifiAdminOrdersList.Filter, true);
-    //    self.Load();
-    //};
-
-    //self.FillFilterTags = function () {
-    //    var excludedTags = ["minfromdate", "orderreferencekey", "orderreferencename", "clear"];
-    //    $.each(self.Filter,
-    //        function (child) {
-    //            if ($.inArray(child.toLowerCase(), excludedTags) === -1) {
-    //                const obj = self.Filter[child];
-    //                if (ko.isObservable(obj) && (obj() || obj() === 0)) {
-    //                    const item = self.FormaTagOutput(child, obj);
-    //                    self.TagsFilter.CreateTag(item, obj() === self.DefaultFilter[child]());
-    //                }
-    //            }
-    //        });
-    //    self.ShowFilter(self.SelectedFilters().length === 0);
-    //};
-
-    //self.FormaTagOutput = function (name, value) {
-    //    var currentValue = value();
-
-    //    switch (name.toLowerCase()) {
-    //        case "statusid":
-    //            currentValue = $.grep(self.Statuses(), function (item) {
-    //                return item.Key() === currentValue;
-    //            })[0].Value();
-    //            break;
-
-    //        case "storeid":
-    //            currentValue = $.grep(self.Councils(), function (item) {
-    //                return item.Key() === currentValue;
-    //            })[0].Value();
-    //            break;
-
-    //        case "datefrom":
-    //            currentValue = "From: " + currentValue;
-    //            break;
-
-    //        case "dateto":
-    //            currentValue = "To: " + currentValue;
-    //            break;
-
-    //        case "provider":
-    //            currentValue = "Provider: " + currentValue;
-    //            break;
-
-    //        case "postcode":
-    //            currentValue = "Postcode: " + currentValue;
-    //            break;
-
-    //        case "orderreferencevalue":
-    //            currentValue = self.Filter.OrderReferenceName() + " : " + currentValue;
-    //            break;
-    //    }
-
-    //    const filterItem = { filterName: name, value: currentValue };
-    //    self.SelectedFilters().push(filterItem);
-
-    //    return currentValue;
-    //};
-
-    //self.UpdateFilter = function (item) {
-    //    for (let index = 0; index < self.SelectedFilters().length; index++) {
-    //        const filter = self.SelectedFilters()[index];
-    //        if (filter.value == item) {
-    //            self.SetToDefaultFilterItem(filter.filterName);
-    //            self.SelectedFilters.remove(filter);
-    //            break;
-    //        }
-    //    }
-    //    self.Pager.PageIndex(0);
-    //    self.TagsIsFilled(false);
-    //    self.Load(true);
-    //};
-
-    //self.SetToDefaultFilterItem = function (itemName) {
-    //    const obj = self.Filter[itemName];
-    //    obj(self.DefaultFilter[itemName]());
-    //};
-
-    //self.TagsFilter = new Tagit({
-    //    IsTagHide: self.ShowFilter,
-    //    ChangeTagFunction: self.ChangeFilter,
-    //    OnRemoveTagFunc: self.UpdateFilter
-    //});
+    self.ClearFilter = function () {
+        self.Pager.PageIndex(0);
+        self.Filter.Clear();
+        self.Load();
+    };
 
     self.Init();
 };
 
-ToDoItemsList.FilterViewModel = function (filter, isDefault) {
+ToDoItemsList.FilterViewModel = function () {
     var self = this;
 
-    self.StatusId = ko.observable(isDefault ? 0 : filter.StatusId);
-    self.Description = ko.observable(isDefault ? null : filter.PersonFirstName);
-    self.Deadline = ko.observable(isDefault ? null : filter.DateFrom);
+    self.StatusId = ko.observable(0);
+    self.Subjects = ko.observable(null);
+    self.Name = ko.observable(null);
+    self.Deadline = ko.observable(null);
 
     self.Clear = function () {
-        self.StatusId(null);
-        self.Description(null);
+        self.StatusId(0);
+        self.Name(null);
+        self.Subjects(null);
         self.Deadline(null);
     };
 };

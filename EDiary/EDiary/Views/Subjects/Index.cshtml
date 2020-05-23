@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Subjects";
+}
+<div class="container flex-card" id="subjects">
+    <ol class="breadcrumb mt-4 mb-3">
+        <li class="breadcrumb-item">
+            <a asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item active">Subjects</li>
+    </ol>
+    <h1 class="mb-3">My Subjects</h1>
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="card card-filter my-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-left-none">
+                            <span class="card-label">Your Work</span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right pad-right-none">
+                            <span class="card-status" @*data-bind="text: Status"*@>Proposed</span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <button class="btn btn-lg btn-block add-create-button">
+                            <i class="fas fa-plus add-create-button-icon"></i> Add or create
+                        </button>
+                    </div>
+                    <div class="row mt-3">
+                        <button class="btn btn-lg btn-primary btn-block mark-as-complete-button">
+                            <i class="fas fa-check add-create-button-icon"></i> Mark as complete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="my-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                            <div class="task-name-title" @*data-bind="text: Name"*@>Modular control work №3</div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
+                            <div class="task-points" @*data-bind="text: Points"*@>30 Points</div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <span class="" @*data-bind="text: Description"*@>
+                                Include UI patterns inside each other like Russian nesting dolls. Make a change to a pattern and immediately see those changes reflected anywhere it is included.
+                                Design With Dynamic Data
+                                Create living UI prototypes using dynamic data to ensure your components can handle the dynamic nature of your content.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <i class="fas fa-user-tag"></i><span class="task-author padding-left-0-6" @*data-bind="text: CreatedBy"*@>Jamie Preston</span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-right">
+                            <i class="fas fa-history"></i><span class="task-date-creation padding-left-0-6" @*data-bind="text: CreatedBy"*@>Createn On: 21 May 2020 06:07:59</span>
+                        </div>
+                    </div>
+                    <hr class="mb-4" />
+                    <div class="row margin-top-60">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <i class="fas fa-comments font-size-1-4"></i>
+                            <div class="card-label inline-block" @*data-bind="text: Notes"*@>Task Notes</div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-right-none">
+                            <div class="form-label-group">
+                                <input class="form-control" id="note" placeholder="Leave note to task">
+                                <label class="cursor-pointer" for="note">Leave note to task</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none text-align-center margin-top-6">
+                            <i class="fab fa-telegram-plane font-size-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
