@@ -7,6 +7,6 @@ namespace DAL.Models
         public string Name { get; set; }
         public string Subjects { get; set; }
         public DateTime? Deadline { get; set; }
-        public int StatusId { get; set; }
+        public int? StatusId { get; set; }
     }
 }

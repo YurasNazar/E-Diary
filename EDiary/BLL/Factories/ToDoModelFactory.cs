@@ -1,6 +1,7 @@
 ﻿using BLL.Extensions;
 using BLL.Interfaces;
 using Common;
+using Common.Enums;
 using DAL.Entities;
 using DAL.Models;
 using DAL.ViewModels;
@@ -22,12 +23,14 @@ namespace BLL.Factories
                 subjects: filter.Subjects,
                 deadline: filter.Deadline,
                 name: filter.Name,
+                statusId: filter.StatusId,
                 pageIndex: pager.PageIndex, pageSize: pager.PageSize > 0 ? pager.PageSize : Constants.Paging.DefaultPageSize, userId);
 
             var orderListModel = new ToDoViewModel
             {
                 ToDoItems = pagedList.Select(PrepareToDoModel).ToList(),
                 Paging = PagerExtensions.ToSimplePagerModel(pagedList),
+                Statuses = EnumHelpers.GetEnumKeyValuePairList<TaskStatus>(),
                 Filter = filter,
             };
 
@@ -41,8 +44,8 @@ namespace BLL.Factories
                 Name = todo.Name,
                 Description = todo.Description,
                 StatusId = todo.StatusId,
-                //SubjectId = todo.SubjectId,
-                DeadLine = todo.DeadLine
+                DeadLine = todo.DeadLine,
+                Subject = "Some subjects"
             };
         }
     }

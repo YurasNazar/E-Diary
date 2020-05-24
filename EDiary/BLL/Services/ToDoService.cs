@@ -23,21 +23,17 @@ namespace BLL.Services
             _subjectRepository = subjectRepository;
         }
 
-        public IPagedList<Task> SearchToDos(string subjects = null, DateTime? deadline = null, string name = null, int pageIndex = 0, int pageSize = int.MaxValue, string userId = "")
+        public IPagedList<Task> SearchToDos(string subjects = null, DateTime? deadline = null, string name = null, int? statusId = null, int pageIndex = 0, int pageSize = int.MaxValue, string userId = "")
         {
-            var query = GetSearchOrdersQuery(subjects, deadline, name, pageIndex, pageSize, userId);
+            var query = GetSearchOrdersQuery(subjects, deadline, name, statusId, pageIndex, pageSize, userId);
 
             return new PagedList<Task>(query, pageIndex, pageSize);
 
         }
 
-        private IQueryable<Task> GetSearchOrdersQuery(string subjects, DateTime? deadline, string name, int pageIndex, int pageSize, string userId)
+        private IQueryable<Task> GetSearchOrdersQuery(string subjects, DateTime? deadline, string name, int? statusId , int pageIndex, int pageSize, string userId)
         {
             var query = _taskRepository.TableNoTracking;
-
-            //query = query.Join(_subjectRepository.TableNoTracking,
-            //    task => task.SubjectId,
-            //    subject => subject.Name);
 
             if (!string.IsNullOrWhiteSpace(name))
             {
@@ -47,6 +43,11 @@ namespace BLL.Services
             if (deadline.HasValue)
             {
                 query = query.Where(x => x.DeadLine <= deadline.Value);
+            }
+
+            if (statusId.HasValue)
+            {
+                query = query.Where(x => x.StatusId == statusId.Value);
             }
 
             query = query.Where(x => x.UserId == userId);

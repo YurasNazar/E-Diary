@@ -5,7 +5,22 @@
 }
 @section Scripts
 {
+    <script src="~/js/app/datepicker.js"></script>
     <script src="~/js/app/to-do.js"></script>
+    <script src="~/lib/moment.js/moment.js"></script>
+}
+@section KnockoutContext {
+    <script type="text/javascript">
+        ToDoItemsList.ContainerId = '#todo-list';
+        ToDoItemsList.ToDos = @Html.Raw(JSONConverter.Encode(Model.ToDoItems));
+        ToDoItemsList.Filter = @Html.Raw(JSONConverter.Encode(Model.Filter));
+        ToDoItemsList.Pager =  @Html.Raw(JSONConverter.Encode(Model.Paging));
+        ToDoItemsList.Statuses =  @Html.Raw(JSONConverter.Encode(Model.Statuses));
+
+        ToDoItemsList.GetToDosUrl = "@Html.Raw(Url.Action("GetToDos"))";
+
+        ToDoItemsList.Init();
+    </script>
 }
 <div class="container min-height-600" id="todo-list">
     <ol class="breadcrumb mt-4 mb-3">
@@ -34,16 +49,16 @@
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                             <div class="form-label-group">
-                                <input class="form-control" id="status" placeholder="Status" data-bind="value: StatusId">
-                                <label class="cursor-pointer" for="status">Status</label>
+                                <select class="form-control select-control cursor-pointer" data-bind="options: $root.Statuses, value: StatusId, optionsText: 'Value', optionsValue: 'Key', optionsCaption: '-Any-'"></select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                            <div class="form-label-group">
-                                <input class="form-control" id="deadline" placeholder="Deadline" data-bind="value: Deadline">
-                                <label class="cursor-pointer" for="deadline">Deadline</label>
+                            <div class="form-label-group relative">
+                                <input class="form-control cursor-pointer" id="calendar-date" type="text" placeholder="Select a Deadline date" data-format="mm/dd/yyyy" data-bind="value: Deadline">
+                                <label class="cursor-pointer" for="calendar-date">Deadline</label>
+                                <span class="todo-datepicker cursor-pointer"><i class="fas fa-calendar-alt"></i></span>
                             </div>
                         </div>
                     </div>
@@ -79,7 +94,7 @@
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <label class="control-label"> Subject: </label><br />
-                            <span data-bind="text: SubjectId"></span>
+                            <span data-bind="text: Subject"></span>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <label class="control-label"> Status: </label><br />
@@ -87,7 +102,7 @@
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                             <label class="control-label"> Deadline: </label><br />
-                            <span data-bind="text: DeadLine"></span>
+                            <span data-bind="text: $parent.FormatToLocalDateTime(DeadLine())"></span>
                         </div>
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-align-center">
                             <a class="cursor-pointer"><i class="font-size-1-5 padding-top-50 fas fa-share-square"></i></a>
@@ -103,15 +118,4 @@
         </div>
     </div>
 </div>
-@section KnockoutContext {
-    <script type="text/javascript">
-        ToDoItemsList.ContainerId = '#todo-list';
-        ToDoItemsList.ToDos = @Html.Raw(JSONConverter.Encode(Model.ToDoItems));
-        ToDoItemsList.Filter = @Html.Raw(JSONConverter.Encode(Model.Filter));
-        ToDoItemsList.Pager =  @Html.Raw(JSONConverter.Encode(Model.Paging));
 
-        ToDoItemsList.GetToDosUrl = "@Html.Raw(Url.Action("GetToDos"))";
-
-        ToDoItemsList.Init();
-    </script>
-}

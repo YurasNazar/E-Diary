@@ -37,9 +37,11 @@ ToDoItemsList.ToDoViewModel = function () {
 
 
     self.Init = function () {
+        debugger;
         ko.mapping.fromJS(ToDoItemsList.ToDos, ToDoItemsList.Mapping.ToDos, self.ToDos);
         self.Filter = new ToDoItemsList.FilterViewModel(ToDoItemsList.Filter, true);
         ko.mapping.fromJS(ToDoItemsList.Pager, {}, self.Pager);
+        ko.mapping.fromJS(ToDoItemsList.Statuses, {}, self.Statuses);
 
         self.Pager.Load = self.Load;
     };
@@ -49,6 +51,8 @@ ToDoItemsList.ToDoViewModel = function () {
             filter: ko.mapping.toJS(self.Filter, ToDoItemsList.FilterMapping),
             pager: ko.mapping.toJS(self.Pager, ToDoItemsList.PagerMapping)
         };
+
+        data.filter.Deadline = moment(data.filter.Deadline).format();
 
         $.ajax({
             url: ToDoItemsList.GetToDosUrl,
@@ -62,6 +66,12 @@ ToDoItemsList.ToDoViewModel = function () {
                 scrollToTop();
             }
         });
+    };
+
+    self.FormatToLocalDateTime = function (date) {
+        debugger;
+        var localDate = moment.utc(date).local().format('YYYY-MM-DD HH:mm:ss');
+        return localDate;
     };
 
     //self.Details = function (model) {
@@ -96,13 +106,13 @@ ToDoItemsList.ToDoViewModel = function () {
 ToDoItemsList.FilterViewModel = function () {
     var self = this;
 
-    self.StatusId = ko.observable(0);
+    self.StatusId = ko.observable(null);
     self.Subjects = ko.observable(null);
     self.Name = ko.observable(null);
     self.Deadline = ko.observable(null);
 
     self.Clear = function () {
-        self.StatusId(0);
+        self.StatusId(null);
         self.Name(null);
         self.Subjects(null);
         self.Deadline(null);
