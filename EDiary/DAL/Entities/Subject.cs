@@ -1,4 +1,6 @@
-﻿namespace DAL.Entities
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace DAL.Entities
 {
     public class Subject : BaseEntity
     {

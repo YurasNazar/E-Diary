@@ -10,6 +10,7 @@ namespace DAL.Entities
         public int StatusId { get; set; }
         public string TeacherId { get; set; }
         public int SubjectId { get; set; }
+        public virtual Subject Subject { get; set; }
         public DateTime DeadLine { get; set; }
     }
 }

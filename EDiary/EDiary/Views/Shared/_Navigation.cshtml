@@ -3,6 +3,8 @@
 @{
     Layout = null;
     var user = await UserManager.GetUserAsync(User);
+    var userRoles = await UserManager.GetRolesAsync(user);
+    var userRole = userRoles.ToList().FirstOrDefault();
 }
 <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-blue-gradient fixed-top">
     <div class="container">
@@ -18,10 +20,13 @@
                         <i class="fas fa-calendar-week"></i>
                         <a class="nav-link text-dark padding-0" asp-controller="Calendar" asp-action="Index">Calendar</a>
                     </li>
-                    <li class="nav-item text-align-center">
-                        <i class="fas fa-th-list"></i>
-                        <a class="nav-link text-dark padding-0" asp-controller="ToDo" asp-action="Index">To Do</a>
-                    </li>
+                    @if (userRole == "Student")
+                    {
+                        <li class="nav-item text-align-center">
+                            <i class="fas fa-th-list"></i>
+                            <a class="nav-link text-dark padding-0" asp-controller="ToDo" asp-action="Index">To Do</a>
+                        </li>
+                    }
                     <li class="nav-item text-align-center">
                         <i class="fas fa-book"></i>
                         <a class="nav-link text-dark padding-0" asp-controller="Subjects" asp-action="Index">Subjects</a>
@@ -31,10 +36,6 @@
                         <a class="nav-link text-dark padding-0" href="#" id="userActionNavbar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@user.FullName</a>
                         <div class="dropdown-menu dropdown-menu-right user-navbar-dropdown" aria-labelledby="userActionNavbar">
                             <a class="dropdown-item">
-                                @{
-                                    var userRoles = await UserManager.GetRolesAsync(user);
-                                    var userRole = userRoles.ToList().FirstOrDefault();
-                                }
                                 Role: &nbsp;@userRole &nbsp;
                                 @if (userRole == "Student")
                                 {

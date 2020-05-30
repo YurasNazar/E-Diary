@@ -45,7 +45,7 @@ namespace BLL.Factories
                 Description = todo.Description,
                 StatusId = todo.StatusId,
                 DeadLine = todo.DeadLine,
-                Subject = "Some subjects"
+                Subject = todo.Subject.Name
             };
         }
     }

@@ -3,6 +3,7 @@ using BLL.PagedList;
 using DAL.Entities;
 using DAL.Repository;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -31,13 +32,18 @@ namespace BLL.Services
 
         }
 
-        private IQueryable<Task> GetSearchOrdersQuery(string subjects, DateTime? deadline, string name, int? statusId , int pageIndex, int pageSize, string userId)
+        private IQueryable<Task> GetSearchOrdersQuery(string subjects, DateTime? deadline, string name, int? statusId, int pageIndex, int pageSize, string userId)
         {
-            var query = _taskRepository.TableNoTracking;
+            var query = _taskRepository.TableNoTracking.Include(x => x.Subject) as IQueryable<Task>;
 
             if (!string.IsNullOrWhiteSpace(name))
             {
                 query = query.Where(x => x.Name.ToLower().Contains(name));
+            }
+
+            if (!string.IsNullOrWhiteSpace(subjects))
+            {
+                query = query.Where(x => x.Subject.Name.ToLower().Contains(subjects));
             }
 
             if (deadline.HasValue)
