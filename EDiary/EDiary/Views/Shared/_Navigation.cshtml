@@ -3,8 +3,15 @@
 @{
     Layout = null;
     var user = await UserManager.GetUserAsync(User);
-    var userRoles = await UserManager.GetRolesAsync(user);
-    var userRole = userRoles.ToList().FirstOrDefault();
+
+    IList<string> userRoles = null;
+    var userRole = "";
+
+    if (user != null)
+    {
+        userRoles = await UserManager.GetRolesAsync(user);
+        userRole = userRoles.ToList().FirstOrDefault();
+    }
 }
 <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-blue-gradient fixed-top">
     <div class="container">
@@ -25,6 +32,13 @@
                         <li class="nav-item text-align-center">
                             <i class="fas fa-th-list"></i>
                             <a class="nav-link text-dark padding-0" asp-controller="ToDo" asp-action="Index">To Do</a>
+                        </li>
+                    }
+                    @if (userRole == "Teacher")
+                    {
+                        <li class="nav-item text-align-center">
+                            <i class="fas fa-th-list"></i>
+                            <a class="nav-link text-dark padding-0" asp-controller="ToDo" asp-action="Index">Tasks</a>
                         </li>
                     }
                     <li class="nav-item text-align-center">

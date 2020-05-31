@@ -703,3 +703,57 @@
 .margin-top-30px {
     margin-top: 30px;
 }
+
+.page-title-header {
+    font-family: 'Google Sans',Roboto,Arial,sans-serif;
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 2.45rem;
+    color: #000000b5;
+}
+
+/*.card div.subject-container:nth-of-type(odd) {
+    background-color: red;
+}
+
+.card div.subject-container:nth-of-type(even) {
+    background-color: #fff;
+}*/
+
+/*div.subject-container:nth-of-type(odd) {
+    background-color: red;
+}
+
+div.subject-container:nth-of-type(even) {
+    background-color: #fff;
+}*/
+
+/*.subjects-tiles-container div.subject-container:nth-of-type(odd) {
+    background-color: red;
+}
+
+.subjects-tiles-container div.subject-container:nth-of-type(even) {
+    background-color: red;
+}*/
+
+.subject-container {
+    border-radius: .5rem;
+}
+
+.input-group-custom {
+    padding-top: 20px;
+}
+
+.create-subject-input {
+    border-radius: 2rem;
+    padding: 1.3rem;
+}
+
+.create-subject-textarea {
+    border-radius: 0.9rem;
+    padding: 1rem;
+}
+
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}

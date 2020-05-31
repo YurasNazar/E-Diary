@@ -1,19 +1,7 @@
 ﻿@model ToDoViewModel
-@inject UserManager<ApplicationUser> UserManager
 @inject IJsonHelper Json;
 @{
     ViewBag.Title = "To Do";
-
-    var user = await UserManager.GetUserAsync(User);
-
-    IList<string> userRoles = null;
-    var userRole = "";
-
-    if (user != null)
-    {
-        userRoles = await UserManager.GetRolesAsync(user);
-        userRole = userRoles.ToList().FirstOrDefault();
-    }
 }
 @section Scripts
 {
@@ -41,14 +29,7 @@
         </li>
         <li class="breadcrumb-item active">To Do</li>
     </ol>
-    @if (userRole == "Student")
-    {
-        <div class="mb-3 page-title-header">To Do Items</div>
-    }
-    @if (userRole == "Teacher")
-    {
-        <div class="mb-3 page-title-header">Tasks</div>
-    }
+    <div class="mb-3 page-title-header">To Do Items</div>
     <div class="row" data-bind="with: Filter">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mx-auto">
             <div class="card card-filter my-4">
@@ -137,4 +118,6 @@
         </div>
     </div>
 </div>
+
+
 

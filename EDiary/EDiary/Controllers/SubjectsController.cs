@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DAL.Entities;
+using EDiary.Extensions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +11,34 @@ namespace EDiary.Controllers
 {
     public class SubjectsController : BaseController
     {
-        public SubjectsController()
+        private readonly UserManager<ApplicationUser> _userManager;
+        public SubjectsController(UserManager<ApplicationUser> userManager)
         {
-
+            _userManager = userManager;
         }
 
         [HttpGet]
-        public IActionResult Index(/*ToDoFilterModel filter, SimplePagerModel pager*/)
+        public IActionResult Index()
         {
-            //var userId = User.GetLoggedInUserId<string>();
-            //var model = _toDoModelFactory.PrepareToDoViewModel(filter, pager, userId);
+            var isTeacher = User.IsTeacher();
+            if (isTeacher)
+            {
+                return View("../Teacher/Subjects/Create");
+            }
 
             return View();
         }
+        
+        [HttpGet]
+        public IActionResult List()
+        {
+            var isTeacher = User.IsTeacher();
+            if (isTeacher)
+            {
+                return View("../Subjects/Index");
+            }
 
+            return View();
+        }
     }
 }

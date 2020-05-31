@@ -22,7 +22,7 @@
         </li>
         <li class="breadcrumb-item active">Calendar</li>
     </ol>
-    <h1 class="mb-3">Your calendar</h1>
+    <div class="mb-4 page-title-header">Your Calendar</div>
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
             <div class="form-group width-50">
@@ -31,6 +31,11 @@
                     <span class="ediary-datepicker cursor-pointer"><i class="fas fa-calendar-alt"></i></span>
                 </div>
             </div>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 pull-right">
+            <button class="btn btn-lg add-create-button margin-bottom-20" id="bootbox">
+                <i class="fas fa-plus add-create-button-icon"></i> Add new appointment
+            </button>
         </div>
     </div>
     <div class="mb-3 container">
@@ -80,4 +85,64 @@
             </div>
         </div>
     </div>
+
+    <div class="bootbox-content" style="display:none;">
+        <div class="form-group">
+            <label class="control-label">Theme</label>
+            <input class="form-control create-subject-input" placeholder="Enter appointment theme" required>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Description</label>
+            <textarea class="form-control create-subject-textarea" placeholder="Enter appointment description" required></textarea>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Join Code</label>
+            <input class="form-control create-subject-input" placeholder="Enter code to join subject" required>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Location</label>
+            <input class="form-control create-subject-input" placeholder="Enter appointment location" required>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Date and Time</label>
+            <div class="relative">
+                <input id="new-date" type="text" class="form-control cursor-pointer" placeholder="Select a Date" data-format="mm/dd/yyyy">
+                <span class="ediary-datepicker cursor-pointer"><i class="fas fa-calendar-alt"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#bootbox").on("click", function (event) {
+                var modal = bootbox.dialog({
+                    message: $(".bootbox-content").html(),
+                    title: "New Appointment",
+                    buttons: [
+                        {
+                            label: "Create",
+                            className: "btn btn-primary pull-left",
+                            callback: function () {
+                                return false;
+                            }
+                        },
+                        {
+                            label: "Close",
+                            className: "btn btn-default pull-left",
+                            callback: function () {
+                                console.log("just do something on close");
+                            }
+                        }
+                    ],
+                    show: false,
+                    onEscape: function () {
+                        modal.modal("hide");
+                    }
+                });
+
+                modal.modal("show");
+            });
+        });
+    </script>
 </div>
+

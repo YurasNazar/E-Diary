@@ -41,5 +41,13 @@ namespace EDiary.Extensions
 
             return principal.FindFirstValue(ClaimTypes.Email);
         }
+
+        public static bool IsTeacher(this ClaimsPrincipal principal)
+        {
+            if (principal == null)
+                throw new ArgumentNullException(nameof(principal));
+
+            return principal.IsInRole("Teacher");
+        }
     }
 }
