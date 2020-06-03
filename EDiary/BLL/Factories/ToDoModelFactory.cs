@@ -37,15 +37,15 @@ namespace BLL.Factories
             return toDoListModel;
         }
 
-        public ToDoItem PrepareToDoModel(Task todo)
+        public ToDoItem PrepareToDoModel(UserTaskMapping userTask)
         {
             return new ToDoItem
             {
-                Name = todo.Name,
-                Description = todo.Description,
-                StatusId = todo.StatusId,
-                DeadLine = todo.DeadLine,
-                Subject = todo.Subject.Name
+                Name = userTask.Task.Name,
+                Description = userTask.Task.Description,
+                StatusId = userTask.Task.StatusId,
+                DeadLine = userTask.Task.DeadLine,
+                Subject = userTask.Task.Subject.Name
             };
         }
     }

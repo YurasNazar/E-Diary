@@ -8,7 +8,6 @@ namespace DAL.Entities
         public string Description { get; set; }
         public int MaxAssessment { get; set; }
         public int? Assessment { get; set; }
-        public string UserId { get; set; }
         public int StatusId { get; set; }
         public virtual ApplicationUser CreatedBy { get; set; }
         public virtual Subject Subject { get; set; }

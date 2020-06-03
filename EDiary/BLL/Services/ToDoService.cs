@@ -12,53 +12,52 @@ namespace BLL.Services
     public class ToDoService : IToDoService
     {
         private readonly IRepository<Task> _taskRepository;
-        private readonly IRepository<Subject> _subjectRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IRepository<UserTaskMapping> _userTaskMappingRepository;
 
         public ToDoService(IRepository<Task> taskRepository,
-                           IRepository<Subject> subjectRepository,
-                           UserManager<ApplicationUser> userManager)
+                           IRepository<UserTaskMapping> userTaskMappingRepository)
         {
-            _userManager = userManager;
             _taskRepository = taskRepository;
-            _subjectRepository = subjectRepository;
+            _userTaskMappingRepository = userTaskMappingRepository;
         }
 
-        public IPagedList<Task> SearchToDos(string subjects = null, DateTime? deadline = null, string name = null, int? statusId = null, int pageIndex = 0, int pageSize = int.MaxValue, string userId = "")
+        public IPagedList<UserTaskMapping> SearchToDos(string subjects = null, DateTime? deadline = null, string name = null, int? statusId = null, 
+            int pageIndex = 0, int pageSize = int.MaxValue, string userId = "")
         {
-            var query = GetSearchTasksQuery(subjects, deadline, name, statusId, pageIndex, pageSize, userId);
+            var query = GetSearchTasksQuery(subjects, deadline, name, statusId, userId);
 
-            return new PagedList<Task>(query, pageIndex, pageSize);
+            return new PagedList<UserTaskMapping>(query, pageIndex, pageSize);
         }
 
-        private IQueryable<Task> GetSearchTasksQuery(string subjects, DateTime? deadline, string name, int? statusId,
-            int pageIndex, int pageSize, string userId)
+        private IQueryable<UserTaskMapping> GetSearchTasksQuery(string subjects, DateTime? deadline, string name, int? statusId, string userId)
         {
-            var query = _taskRepository.TableNoTracking.Include(x => x.Subject) as IQueryable<Task>;
+            var query = _userTaskMappingRepository.TableNoTracking.Include(x => x.User)
+                .Include(x => x.Task).ThenInclude(task => task.Subject)
+                .Include(x => x.Task).ThenInclude(task => task.CreatedBy) as IQueryable<UserTaskMapping>;
 
             if (!string.IsNullOrWhiteSpace(name))
             {
-                query = query.Where(x => x.Name.ToLower().Contains(name));
+                query = query.Where(x => x.Task.Name.ToLower().Contains(name));
             }
 
             if (!string.IsNullOrWhiteSpace(subjects))
             {
-                query = query.Where(x => x.Subject.Name.ToLower().Contains(subjects));
+                query = query.Where(x => x.Task.Subject.Name.ToLower().Contains(subjects));
             }
 
             if (deadline.HasValue)
             {
-                query = query.Where(x => x.DeadLine <= deadline.Value);
+                query = query.Where(x => x.Task.DeadLine <= deadline.Value);
             }
 
             if (statusId.HasValue)
             {
-                query = query.Where(x => x.StatusId == statusId.Value);
+                query = query.Where(x => x.Task.StatusId == statusId.Value);
             }
 
-            query = query.Where(x => x.UserId == userId);
+            query = query.Where(x => x.User.Id == userId);
 
-            query = query.OrderBy(x => x.DeadLine);
+            query = query.OrderBy(x => x.Task.DeadLine);
 
             return query;
         }
