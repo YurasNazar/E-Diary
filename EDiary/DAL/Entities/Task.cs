@@ -6,11 +6,13 @@ namespace DAL.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public int MaxAssessment { get; set; }
+        public int? Assessment { get; set; }
         public string UserId { get; set; }
         public int StatusId { get; set; }
-        public string TeacherId { get; set; }
-        public int SubjectId { get; set; }
+        public virtual ApplicationUser CreatedBy { get; set; }
         public virtual Subject Subject { get; set; }
         public DateTime DeadLine { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

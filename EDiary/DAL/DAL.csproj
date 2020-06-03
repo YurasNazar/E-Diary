@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200518143525_AddNewColumnToUsersTable.cs" />
     <Compile Remove="Migrations\20200518143525_AddNewColumnToUsersTable.Designer.cs" />
+    <Compile Remove="Migrations\20200603171714_CreateSubjectPorstTable.cs" />
+    <Compile Remove="Migrations\20200603171714_CreateSubjectPorstTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

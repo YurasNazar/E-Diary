@@ -4,14 +4,16 @@ using DAL.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(EDiaryDbContext))]
-    partial class EDiaryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200603173808_ChangeUserSubjectMappingUserProperty")]
+    partial class ChangeUserSubjectMappingUserProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,7 +95,7 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("DAL.Entities.ScheduleEvent", b =>
+            modelBuilder.Entity("DAL.Entities.ScheduleEvents", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -231,29 +233,31 @@ namespace DAL.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("TaskSubjectMapping");
+                    b.ToTable("TaskSubjectMappings");
                 });
 
-            modelBuilder.Entity("DAL.Entities.UserScheculeEventMapping", b =>
+            modelBuilder.Entity("DAL.Entities.ToDo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ScheduleEventId")
+                    b.Property<DateTime>("DeadLine")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ScheduleEventId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserScheculeEventsMapping");
+                    b.ToTable("ToDos");
                 });
 
             modelBuilder.Entity("DAL.Entities.UserSubjectMapping", b =>
@@ -275,7 +279,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserSubjectsMapping");
+                    b.ToTable("UserSubjectMappings");
                 });
 
             modelBuilder.Entity("DAL.Entities.UserTaskMapping", b =>
@@ -297,7 +301,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTasksMapping");
+                    b.ToTable("UserTaskMappings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -462,17 +466,6 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Entities.Task", "Task")
                         .WithMany()
                         .HasForeignKey("TaskId");
-                });
-
-            modelBuilder.Entity("DAL.Entities.UserScheculeEventMapping", b =>
-                {
-                    b.HasOne("DAL.Entities.ScheduleEvent", "ScheduleEvent")
-                        .WithMany()
-                        .HasForeignKey("ScheduleEventId");
-
-                    b.HasOne("DAL.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("DAL.Entities.UserSubjectMapping", b =>

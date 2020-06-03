@@ -26,13 +26,13 @@ namespace BLL.Services
 
         public IPagedList<Task> SearchToDos(string subjects = null, DateTime? deadline = null, string name = null, int? statusId = null, int pageIndex = 0, int pageSize = int.MaxValue, string userId = "")
         {
-            var query = GetSearchOrdersQuery(subjects, deadline, name, statusId, pageIndex, pageSize, userId);
+            var query = GetSearchTasksQuery(subjects, deadline, name, statusId, pageIndex, pageSize, userId);
 
             return new PagedList<Task>(query, pageIndex, pageSize);
-
         }
 
-        private IQueryable<Task> GetSearchOrdersQuery(string subjects, DateTime? deadline, string name, int? statusId, int pageIndex, int pageSize, string userId)
+        private IQueryable<Task> GetSearchTasksQuery(string subjects, DateTime? deadline, string name, int? statusId,
+            int pageIndex, int pageSize, string userId)
         {
             var query = _taskRepository.TableNoTracking.Include(x => x.Subject) as IQueryable<Task>;
 

@@ -20,12 +20,6 @@ namespace BLL.PagedList
 
         private PagedList() { }
 
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="source">source</param>
-        /// <param name="pageIndex">Page index</param>
-        /// <param name="pageSize">Page size</param>
         public PagedList(IQueryable<T> source, int pageIndex, int pageSize)
         {
             var total = source.Count();

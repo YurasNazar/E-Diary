@@ -26,7 +26,7 @@ namespace BLL.Factories
                 statusId: filter.StatusId,
                 pageIndex: pager.PageIndex, pageSize: pager.PageSize > 0 ? pager.PageSize : Constants.Paging.DefaultPageSize, userId);
 
-            var orderListModel = new ToDoViewModel
+            var toDoListModel = new ToDoViewModel
             {
                 ToDoItems = pagedList.Select(PrepareToDoModel).ToList(),
                 Paging = PagerExtensions.ToSimplePagerModel(pagedList),
@@ -34,7 +34,7 @@ namespace BLL.Factories
                 Filter = filter,
             };
 
-            return orderListModel;
+            return toDoListModel;
         }
 
         public ToDoItem PrepareToDoModel(Task todo)
