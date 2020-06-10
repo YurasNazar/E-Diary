@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json.Serialization;
 
 namespace EDiary
 {
@@ -33,8 +32,9 @@ namespace EDiary
             services.AddMvc();
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<EDiaryDbContext>();
             services.AddScoped<IToDoModelFactory, ToDoModelFactory>();
-            //services.AddScoped<IUserService, UserService>();
             services.AddScoped<IToDoService, ToDoService>();
+            services.AddScoped<ICalendarModelFactory, CalendarModelFactory>();
+            services.AddScoped<ICalendarService, CalendarService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
 

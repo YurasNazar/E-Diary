@@ -19,5 +19,10 @@
             /// </summary>
             public const int BigPageSize = 10;
         }
+
+        public static class TimeFormat 
+        {
+            public const string AMPMFormat = "hh:mm tt";
+        }
     }
 }

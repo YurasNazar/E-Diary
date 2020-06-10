@@ -14,7 +14,6 @@
         CalendarDayItemsList.Init();
     </script>
 }
-
 <div class="container flex-card" id="calendar">
     <ol class="breadcrumb mt-4 mb-3">
         <li class="breadcrumb-item">
@@ -38,53 +37,36 @@
             </button>
         </div>
     </div>
-    <div class="mb-3 container">
+    <div class="mb-3 container" data-bind="visible: CalendarDayItems().length, foreach: CalendarDayItems">
         <div class="row row-striped">
             <div class="col-2 text-right">
-                <h1 class="display-4"><span class="badge badge-secondary">23</span></h1>
-                <h2>OCT</h2>
+                <h1 class="display-4"><span class="badge badge-secondary" data-bind="text: DayNumber"></span></h1>
+                <h2 class="uppercase" data-bind="text: MonthNameShort"></h2>
             </div>
             <div class="col-10">
-                <h3 class="text-uppercase"><strong>Ice Cream Social</strong></h3>
+                <h3 class="text-uppercase"><strong data-bind="text: Title"></strong></h3>
                 <ul class="list-inline">
-                    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> Monday</li>
-                    <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> 12:30 PM - 2:00 PM</li>
-                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Cafe</li>
+                    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i><span class="margin-left-5" data-bind="text: DayOfWeek"></span></li>
+                    <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i><span class="margin-left-5" data-bind="text: From"></span> - <span data-bind="text: To"></span></li>
+                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i><span class="margin-left-5" data-bind="text: Location"></span></li>
                 </ul>
-                <p>Lorem ipsum dolsit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-        </div>
-        <div class="row row-striped">
-            <div class="col-2 text-right">
-                <h1 class="display-4"><span class="badge badge-secondary">27</span></h1>
-                <h2>OCT</h2>
-            </div>
-            <div class="col-10">
-                <h3 class="text-uppercase"><strong>Operations Meeting</strong></h3>
-                <ul class="list-inline">
-                    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> Friday</li>
-                    <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> 2:30 PM - 4:00 PM</li>
-                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Room 4019</li>
-                </ul>
-                <p>Lorem ipsum dolsit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-        </div>
-        <div class="row row-striped">
-            <div class="col-2 text-right">
-                <h1 class="display-4"><span class="badge badge-secondary">27</span></h1>
-                <h2>OCT</h2>
-            </div>
-            <div class="col-10">
-                <h3 class="text-uppercase"><strong>Operations Meeting</strong></h3>
-                <ul class="list-inline">
-                    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> Friday</li>
-                    <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> 2:30 PM - 4:00 PM</li>
-                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Room 4019</li>
-                </ul>
-                <p>Lorem ipsum dolsit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p data-bind="text: Description">Entity Framework (EF) Core is a lightweight, extensible, open source and cross-platform version of the popular Entity Framework data access technology</p>
             </div>
         </div>
     </div>
+    <div class="center" data-bind="visible: CalendarDayItems().length === 0 && !Loading()">
+        <p class="list-empty-text"> You don't have any items of &nbsp;</p><p class="list-empty-text" data-bind="text: FormattedCalendarDay"></p><p class="list-empty-text">&nbsp;Enjoy your day!</p>
+    </div>
+
+
+
+
+
+
+
+
+
+
 
     <div class="bootbox-content" style="display:none;">
         <div class="form-group">
@@ -96,8 +78,8 @@
             <textarea class="form-control create-subject-textarea" placeholder="Enter appointment description" required></textarea>
         </div>
         <div class="form-group">
-            <label class="control-label">Join Code</label>
-            <input class="form-control create-subject-input" placeholder="Enter code to join subject" required>
+            <label class="control-label">Subject</label>
+            <input class="form-control create-subject-input" placeholder="Enter subject name" required>
         </div>
         <div class="form-group">
             <label class="control-label">Location</label>

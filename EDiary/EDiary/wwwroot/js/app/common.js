@@ -6,6 +6,9 @@ var scrollToTop = function () {
 DateTimeFormat.DateFormat = {
     LongDate: "dd MMMM yyyy",
     Default: "MM/DD/yyyy",
+    DayNumber: "DD",
+    MonthNameShort: "MMM",
+    DayOfWeek: "dddd"
 };
 
 ko.bindingHandlers.DatePicker = {

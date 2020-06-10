@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BLL.Factories;
+using EDiary.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace EDiary.Controllers
 {
     public class CalendarController : BaseController
     {
-        public CalendarController()
+        private readonly ICalendarModelFactory _calendarModelFactory;
+        public CalendarController(ICalendarModelFactory calendarModelFactory)
         {
-                
+            _calendarModelFactory = calendarModelFactory;
         }
 
         [HttpGet]
@@ -19,9 +22,12 @@ namespace EDiary.Controllers
         [HttpPost]
         public JsonResult GetCalendarDayItems(DateTime? calendarDay)
         {
+            var userId = User.GetLoggedInUserId<string>();
+            var model = _calendarModelFactory.PrepareCalendarViewModel(calendarDay, userId);
+
             return CreateJsonResult(true, new
             {
-                ToDos = calendarDay,
+                model.CalendarEvents,
             });
         }
     }
