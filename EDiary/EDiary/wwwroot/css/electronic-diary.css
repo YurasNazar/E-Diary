@@ -773,6 +773,12 @@ div.subject-container:nth-of-type(even) {
     height: 375px;
 }
 
+.center-auto-width {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .list-empty-text {
     font-family: 'Google Sans',Roboto,Arial,sans-serif;
     font-size: 1.2rem;
@@ -780,3 +786,28 @@ div.subject-container:nth-of-type(even) {
     line-height: 2.45rem;
     color: #000000b5;
 }
+
+.margin-none {
+    margin: 0 !important;
+}
+
+.padding-top-10 {
+    padding-top: 10px;
+}
+
+.task-note-author-name {
+    font-family: 'Google Sans',Roboto,Arial,sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    color: #3c4043;
+}
+
+.task-note-text {
+    font-family: 'Google Sans',Roboto,Arial,sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    color: #3c4043;
+}
+

@@ -37,7 +37,6 @@ ToDoItemsList.ToDoViewModel = function () {
 
 
     self.Init = function () {
-        debugger;
         ko.mapping.fromJS(ToDoItemsList.ToDos, ToDoItemsList.Mapping.ToDos, self.ToDos);
         self.Filter = new ToDoItemsList.FilterViewModel(ToDoItemsList.Filter, true);
         ko.mapping.fromJS(ToDoItemsList.Pager, {}, self.Pager);
@@ -69,7 +68,6 @@ ToDoItemsList.ToDoViewModel = function () {
     };
 
     self.FormatToLocalDateTime = function (date) {
-        debugger;
         var localDate = moment.utc(date).local().format('YYYY-MM-DD HH:mm:ss');
         return localDate;
     };

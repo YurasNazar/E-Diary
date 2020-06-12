@@ -41,6 +41,7 @@ namespace BLL.Factories
         {
             return new ToDoItem
             {
+                TaskId = userTask.Task.Id,
                 Name = userTask.Task.Name,
                 Description = userTask.Task.Description,
                 StatusId = userTask.Task.StatusId,

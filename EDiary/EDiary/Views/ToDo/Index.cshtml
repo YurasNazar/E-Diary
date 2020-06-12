@@ -123,8 +123,12 @@
                             <label class="control-label"> Deadline: </label><br />
                             <span data-bind="text: $parent.FormatToLocalDateTime(DeadLine())"></span>
                         </div>
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-align-center">
-                            <a class="cursor-pointer"><i class="font-size-1-5 padding-top-50 fas fa-share-square"></i></a>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 center-auto-width">
+                            <p class="list-empty-text margin-none">
+                                <a class="cursor-pointer" data-bind="attr: { 'href': '@Url.Action("GetTask", "Task")/' + TaskId() }">
+                                    <i class="font-size-1-5 fas fa-share-square padding-top-10"></i>
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </li>

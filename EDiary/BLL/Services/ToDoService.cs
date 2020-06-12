@@ -2,7 +2,6 @@
 using BLL.PagedList;
 using DAL.Entities;
 using DAL.Repository;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -11,13 +10,11 @@ namespace BLL.Services
 {
     public class ToDoService : IToDoService
     {
-        private readonly IRepository<Task> _taskRepository;
         private readonly IRepository<UserTaskMapping> _userTaskMappingRepository;
 
         public ToDoService(IRepository<Task> taskRepository,
                            IRepository<UserTaskMapping> userTaskMappingRepository)
         {
-            _taskRepository = taskRepository;
             _userTaskMappingRepository = userTaskMappingRepository;
         }
 

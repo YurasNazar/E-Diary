@@ -13,6 +13,7 @@ namespace DAL.DatabaseContext
         }
 
         public DbSet<Task> Tasks { get; set; }
+        public DbSet<TaskNote> TaskNotes { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<UserTaskMapping> UserTasksMapping { get; set; }
         public DbSet<UserSubjectMapping> UserSubjectsMapping { get; set; }

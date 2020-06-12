@@ -1,7 +1,6 @@
 ﻿using BLL.PagedList;
 using DAL.Entities;
 using System;
-using System.Collections.Generic;
 
 namespace BLL.Interfaces
 {
