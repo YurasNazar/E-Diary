@@ -2,6 +2,7 @@
 using DAL.Entities;
 using DAL.Models;
 using DAL.ViewModels;
+using System;
 using System.Linq;
 
 namespace BLL.Factories
@@ -57,6 +58,17 @@ namespace BLL.Factories
                 CreatedBy = taskNote.User.FullName,
                 CreatedOn = taskNote.CreatedOn,
                 Note = taskNote.Note
+            };
+        }
+
+        public TaskNote PrepareTaskNoteForInsert(int taskId, ApplicationUser user, string note)
+        {
+            return new TaskNote
+            {
+                TaskId = taskId,
+                User = user,
+                Note = note,
+                CreatedOn = DateTime.UtcNow
             };
         }
     }

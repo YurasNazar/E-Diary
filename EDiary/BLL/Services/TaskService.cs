@@ -23,7 +23,12 @@ namespace BLL.Services
         {
             return _taskRepository.TableNoTracking.Include(x => x.Subject).Include(x => x.CreatedBy).Where(x => x.Id == id).FirstOrDefault();
         }
-        
+
+        public void IntertTaskNote(TaskNote taskNote)
+        {
+            _taskNotesRepository.Insert(taskNote);
+        }
+
         public IPagedList<TaskNote> SearchTaskNotes(int taskId, string userId = "")
         {
             var query = GetSearchTaskNotesQuery(taskId, userId);

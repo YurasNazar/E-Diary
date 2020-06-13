@@ -1,4 +1,7 @@
 ﻿var DateTimeFormat = DateTimeFormat || {};
+var Constants = Constants || {};
+var Actions = Actions || {};
+
 var scrollToTop = function () {
     $(window).scrollTop(0);
 };
@@ -9,7 +12,22 @@ DateTimeFormat.DateFormat = {
     DayNumber: "DD",
     MonthNameShort: "MMM",
     DayOfWeek: "dddd",
-    LongMonthDateFormat: "DD MMMM YYYY HH:mm"
+    LongMonthDateFormat: "DD MMMM YYYY HH:mm",
+    ShortDateTime: "DD MMM HH:mm"
+};
+
+Constants.Strings = {
+    Points: " Points",
+    CreatedOn: "CreatedOn: "
+};
+
+Actions.Type = {
+    Click: "click",
+};
+
+var FileModel = function (name, type) {
+    this.Name = name;
+    this.Type = type;
 };
 
 ko.bindingHandlers.DatePicker = {

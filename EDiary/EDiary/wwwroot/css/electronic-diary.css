@@ -811,3 +811,11 @@ div.subject-container:nth-of-type(even) {
     color: #3c4043;
 }
 
+.margin-top-1 {
+    margin-top: 1rem;
+}
+
+.padding-top-5 {
+    padding-top: 5px;
+}
+

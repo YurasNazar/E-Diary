@@ -8,6 +8,7 @@
     <Folder Include="wwwroot\images\login\" />
     <Folder Include="wwwroot\js\site\" />
     <Folder Include="wwwroot\lib\" />
+    <Folder Include="wwwroot\files\" />
   </ItemGroup>
 
   <ItemGroup>
