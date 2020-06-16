@@ -18,7 +18,18 @@ DateTimeFormat.DateFormat = {
 
 Constants.Strings = {
     Points: " Points",
-    CreatedOn: "CreatedOn: "
+    CreatedOn: "CreatedOn: ",
+    TaskStatus: {
+        Completed: "Completed"
+    }
+};
+
+Constants.Numbers = {
+    TaskStatus: {
+        Proposed: 0,
+        Completed: 1,
+        Assessed: 2
+    }
 };
 
 Actions.Type = {

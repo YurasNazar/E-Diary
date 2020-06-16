@@ -21,5 +21,6 @@ namespace DAL.ViewModels
         public string CreatedByUserName { get; set; }
         public string SubjectName { get; set; }
         public List<TaskNoteModel> TaskNotes { get; set; }
+        public List<File> TaskFiles { get; set; }
     }
 }

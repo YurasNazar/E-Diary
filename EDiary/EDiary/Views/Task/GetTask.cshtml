@@ -15,6 +15,7 @@
         Task.TaskModel = @Html.Raw(JSONConverter.Encode(Model));
         Task.GetTaskNotesUrl = "@Html.Raw(Url.Action("GetTaskNotes"))";
         Task.CreateTaskNote = "@Html.Raw(Url.Action("CreateTaskNote"))";
+        Task.MarkAsComplete = "@Html.Raw(Url.Action("MarkAsComplete"))";
 
         Task.Init();
     </script>
@@ -40,11 +41,15 @@
                             <span class="card-status" data-bind="text: Status"></span>
                         </div>
                     </div>
-                    <div class="row mt-3">
+                    <div class="row mt-3" data-bind="visible: UploadFilesButtonVisible">
                         <button class="btn btn-lg btn-block add-create-button margin-bottom-20" data-bind="click: FileClick">
                             <i class="fas fa-file-upload add-create-button-icon"></i> Upload Files
                         </button>
-                        <input type="file" id="file-uploader" style="display: none" data-bind="event: {change: FilesSelect}" multiple />
+                        <form method="post" asp-controller="Task" asp-action="MarkAsComplete" enctype="multipart/form-data">
+                            <input type="file" id="file-uploader" name="files" data-bind="event: {change: FilesSelect}" multiple style="display: none"/>
+                            <input name="taskId" data-bind="value: TaskId" style="display: none" />
+                            <input id="file-upload-input" type="submit" value="Upload" style="display: none" />
+                        </form>
                     </div>
                     <div class="row margin-bottom-20" data-bind="visible: Files().length, foreach: Files">
                         <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 pad-left-none pad-right-none">
@@ -54,8 +59,8 @@
                             <div data-bind="text: Name"></div>
                         </div>
                     </div>
-                    <div class="row mt-3">
-                        <button class="btn btn-lg btn-primary btn-block mark-as-complete-button" data-bind="click: MarkAsComplete">
+                    <div class="row mt-3" data-bind="visible: MarkAsCompleteButtonVisible">
+                        <button type="submit" class="btn btn-lg btn-primary btn-block mark-as-complete-button" data-bind="click: MarkAsComplete">
                             <i class="fas fa-check add-create-button-icon"></i> Mark as complete
                         </button>
                     </div>
@@ -133,8 +138,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-

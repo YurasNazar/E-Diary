@@ -31,6 +31,7 @@ namespace BLL.Factories
         {
             var task = _taskService.GetById(taskId);
             var taskNotes = _taskService.SearchTaskNotes(taskId);
+            var taskFiles = _taskService.SearchTaskFiles(taskId);
 
             var taskViewModel = new TaskViewModel
             {
@@ -45,7 +46,8 @@ namespace BLL.Factories
                 CreatedByUserName = task.CreatedBy.FullName,
                 Subject = task.Subject,
                 SubjectName = task.Subject.Name,
-                TaskNotes = taskNotes.Select(PrepareTaskNoteModel).ToList()
+                TaskNotes = taskNotes.Select(PrepareTaskNoteModel).ToList(),
+                TaskFiles = taskFiles.Select(PrepareTaskFiles).ToList()
             };
 
             return taskViewModel;
@@ -69,6 +71,15 @@ namespace BLL.Factories
                 User = user,
                 Note = note,
                 CreatedOn = DateTime.UtcNow
+            };
+        }
+
+        public File PrepareTaskFiles(TaskFileMapping taskFile)
+        {
+            return new File
+            {
+                Name = taskFile.File.Name,
+                Path = taskFile.File.Path
             };
         }
     }

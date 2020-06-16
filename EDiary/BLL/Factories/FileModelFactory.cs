@@ -12,5 +12,14 @@ namespace BLL.Factories
                 Path = path
             };
         }
+
+        public TaskFileMapping PrepareTaskFileMappingModel(int taskId, int fileId)
+        {
+            return new TaskFileMapping
+            {
+                TaskId = taskId,
+                FileId = fileId
+            };
+        }
     }
 }

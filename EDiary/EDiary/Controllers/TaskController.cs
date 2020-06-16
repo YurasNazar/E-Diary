@@ -1,12 +1,18 @@
 ﻿using BLL.Factories;
 using BLL.Interfaces;
 using DAL.Entities;
+using DAL.Models;
+using DAL.ViewModels;
 using EDiary.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EDiary.Controllers
@@ -19,7 +25,6 @@ namespace EDiary.Controllers
         private readonly IFileModelFactory _fileModelFactory;
         private readonly ITaskService _taskService;
         private readonly IFileService _fileService;
-
 
         public TaskController(UserManager<ApplicationUser> userManager,
                               IWebHostEnvironment appEnvironment,
@@ -71,23 +76,33 @@ namespace EDiary.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddFile(IFormFile uploadedFile)
+        public async Task<IActionResult> MarkAsComplete(List<IFormFile> files, int taskId)
         {
-            if (uploadedFile != null)
-            {
-                // путь к папке Files
-                string path = "/files/" + uploadedFile.FileName;
-                // сохраняем файл в папку Files в каталоге wwwroot
-                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-                {
-                    await uploadedFile.CopyToAsync(fileStream);
-                }
+            var task = _taskService.GetById(taskId);
 
-                var model = _fileModelFactory.PrepareFileModel(uploadedFile.FileName, path);
-                _fileService.SaveFile(model);
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    var filePath = "/files/" + formFile.FileName;
+                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(fileStream);
+                    }
+
+                    var file = _fileModelFactory.PrepareFileModel(formFile.FileName, filePath);
+                    _fileService.SaveFile(file);
+
+                    var taskFileMapping = _fileModelFactory.PrepareTaskFileMappingModel(taskId, file.Id);
+                    _fileService.SaveTaskFileMappingModel(taskFileMapping);
+                }
             }
 
-            return RedirectToAction("Index");
+            task.StatusId = (int)Common.Enums.TaskStatus.Completed;
+
+            _taskService.UpdateTask(task);
+
+            return RedirectToAction("GetTask", "Task", new { id = task.Id });
         }
     }
 }

@@ -56,7 +56,7 @@ namespace DAL.Repository
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-
+            Entities.Update(entity);
             _context.SaveChanges();
         }
 

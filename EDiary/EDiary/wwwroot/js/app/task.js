@@ -8,7 +8,21 @@ Task.Mapping = {
     }
 };
 
+Task.Mapping = {
+    'Files': {
+        create: function (options) {
+            return new Task.File(options.data);
+        }
+    }
+};
+
 Task.Note = function (data) {
+    var self = this;
+
+    ko.mapping.fromJS(data, {}, self);
+};
+
+Task.File = function (data) {
     var self = this;
 
     ko.mapping.fromJS(data, {}, self);
@@ -22,8 +36,10 @@ Task.TaskViewModel = function () {
     self.Files = ko.observableArray();
 
     self.Init = function () {
+        debugger;
         ko.mapping.fromJS(Task.TaskModel, {}, self);
         ko.mapping.fromJS(Task.TaskModel.TaskNotes, Task.Mapping.Notes, self.Notes);
+        ko.mapping.fromJS(Task.TaskModel.TaskFiles, Task.Mapping.Files, self.Files);
     };
 
     self.FormatMaxAssessment = function (assessment) {
@@ -57,8 +73,32 @@ Task.TaskViewModel = function () {
         }
     };
 
+    self.MarkAsCompleteButtonVisible = function () {
+        return self.StatusId() == Constants.Numbers.TaskStatus.Proposed;
+    }
+
+    self.UploadFilesButtonVisible = function () {
+        return self.StatusId() == Constants.Numbers.TaskStatus.Proposed;
+    }
+
     self.MarkAsComplete = function () {
-        $(Task.FileUploaderId).trigger(Actions.Type.Click);
+        $("#file-upload-input").trigger("click");
+        //var data = {
+        //    fileModels: ko.mapping.toJS(self.Files, {}),
+        //    taskId: self.TaskId()
+        //};
+
+        //$.ajax({
+        //    url: Task.MarkAsComplete,
+        //    type: "POST",
+        //    dataType: "json",
+        //    data: data,
+        //}).done(function (result) {
+        //    if (result && result.success) {
+        //        ko.mapping.fromJS(result.data.TaskNotes, Task.Mapping.Notes, self.Notes);
+        //    }
+        //});
+
     };
 
     self.GetTaskNotes = function () {

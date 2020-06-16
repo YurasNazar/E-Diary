@@ -245,10 +245,10 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("FileId")
+                    b.Property<int>("FileId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TaskId")
+                    b.Property<int>("TaskId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -257,7 +257,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("TaskFileMapping");
+                    b.ToTable("TaskFileMappings");
                 });
 
             modelBuilder.Entity("DAL.Entities.TaskNote", b =>
@@ -538,11 +538,15 @@ namespace DAL.Migrations
                 {
                     b.HasOne("DAL.Entities.File", "File")
                         .WithMany()
-                        .HasForeignKey("FileId");
+                        .HasForeignKey("FileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DAL.Entities.Task", "Task")
                         .WithMany()
-                        .HasForeignKey("TaskId");
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DAL.Entities.TaskNote", b =>
