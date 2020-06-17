@@ -104,5 +104,16 @@ namespace EDiary.Controllers
 
             return RedirectToAction("GetTask", "Task", new { id = task.Id });
         }
+
+        [HttpPost]
+        public JsonResult Evaluate(int taskId, int taskAssessment)
+        {
+            var task = _taskService.GetById(taskId);
+            task.Assessment = taskAssessment;
+            task.StatusId = (int)Common.Enums.TaskStatus.Assessed;
+            _taskService.UpdateTask(task);
+
+            return CreateJsonResult(true);
+        }
     }
 }

@@ -1,6 +1,17 @@
 ﻿@model TaskViewModel
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewBag.Title = "Task";
+    var user = await UserManager.GetUserAsync(User);
+
+    IList<string> userRoles = null;
+    var userRole = "";
+
+    if (user != null)
+    {
+        userRoles = await UserManager.GetRolesAsync(user);
+        userRole = userRoles.ToList().FirstOrDefault();
+    }
 }
 
 @section Scripts
@@ -16,7 +27,7 @@
         Task.GetTaskNotesUrl = "@Html.Raw(Url.Action("GetTaskNotes"))";
         Task.CreateTaskNote = "@Html.Raw(Url.Action("CreateTaskNote"))";
         Task.MarkAsComplete = "@Html.Raw(Url.Action("MarkAsComplete"))";
-
+        Task.Evaluate = "@Html.Raw(Url.Action("Evaluate"))";
         Task.Init();
     </script>
 }
@@ -34,19 +45,31 @@
             <div class="card card-filter my-4">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-left-none">
-                            <span class="card-label">Your Work</span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right pad-right-none">
+                        @if (userRole == "Student")
+                        {
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 pad-left-none">
+                                <span class="card-label">Your Work</span>
+                            </div>
+                        }
+                        @if (userRole == "Teacher")
+                        {
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 pad-left-none">
+                                <span class="card-label">Uploaded Files</span>
+                            </div>
+                        }
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pull-right pad-right-none">
                             <span class="card-status" data-bind="text: Status"></span>
                         </div>
                     </div>
-                    <div class="row mt-3" data-bind="visible: UploadFilesButtonVisible">
-                        <button class="btn btn-lg btn-block add-create-button margin-bottom-20" data-bind="click: FileClick">
-                            <i class="fas fa-file-upload add-create-button-icon"></i> Upload Files
-                        </button>
+                    <div class="row mt-3">
+                        @if (userRole == "Student")
+                        {
+                            <button class="btn btn-lg btn-block add-create-button margin-bottom-20" data-bind="click: FileClick, visible: MarkAsCompleteButtonVisible">
+                                <i class="fas fa-file-upload add-create-button-icon"></i> Upload Files
+                            </button>
+                        }
                         <form method="post" asp-controller="Task" asp-action="MarkAsComplete" enctype="multipart/form-data">
-                            <input type="file" id="file-uploader" name="files" data-bind="event: {change: FilesSelect}" multiple style="display: none"/>
+                            <input type="file" id="file-uploader" name="files" data-bind="event: {change: FilesSelect}" multiple style="display: none" />
                             <input name="taskId" data-bind="value: TaskId" style="display: none" />
                             <input id="file-upload-input" type="submit" value="Upload" style="display: none" />
                         </form>
@@ -59,10 +82,25 @@
                             <div data-bind="text: Name"></div>
                         </div>
                     </div>
-                    <div class="row mt-3" data-bind="visible: MarkAsCompleteButtonVisible">
-                        <button type="submit" class="btn btn-lg btn-primary btn-block mark-as-complete-button" data-bind="click: MarkAsComplete">
-                            <i class="fas fa-check add-create-button-icon"></i> Mark as complete
-                        </button>
+                    <div class="row mt-3">
+                        @if (userRole == "Student")
+                        {
+                            <button type="submit" class="btn btn-lg btn-primary btn-block mark-as-complete-button" data-bind="click: MarkAsComplete, visible: MarkAsCompleteButtonVisible">
+                                <i class="fas fa-check add-create-button-icon"></i> Mark as complete
+                            </button>
+                        }
+                        <input class="form-control create-subject-input mb-2 text-align-center" placeholder="Enter assessment" data-bind="value: Assessment, visible: AssessmentInputDisabled()" required disabled>
+                        @if (userRole == "Teacher")
+                        {
+                            <input class="form-control create-subject-input mb-2 text-align-center" placeholder="Enter assessment" data-bind="value: TaskAssessment, visible: EvaluateButtonVisible()" required>
+                            <button type="submit" class="btn btn-lg btn-primary btn-block mark-as-complete-button" data-bind="click: Evaluate, visible: EvaluateButtonVisible()">
+                                <i class="fas fa-marker add-create-button-icon"></i> Evaluate
+                            </button>
+                            <input class="form-control create-subject-input mb-2 text-align-center" placeholder="Enter assessment" data-bind="value: TaskAssessment, visible: !EvaluateButtonVisible() && !AssessmentInputDisabled()" required disabled>
+                            <button type="submit" class="btn btn-lg btn-primary btn-block mark-as-complete-button" data-bind="click: Evaluate, visible: !EvaluateButtonVisible() && !AssessmentInputDisabled()" disabled>
+                                <i class="fas fa-marker add-create-button-icon"></i> Evaluate
+                            </button>
+                        }
                     </div>
                 </div>
             </div>

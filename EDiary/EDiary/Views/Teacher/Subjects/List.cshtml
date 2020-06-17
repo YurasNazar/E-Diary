@@ -33,15 +33,15 @@
     <div class="mb-3 page-title-header">Hi @user.FullName, here is your subjects</div>
     <div class="row subjects-tiles-container" data-bind="visible: Subjects().length, foreach: Subjects">
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-            <div class="card card-filter my-4">
+            <a class="card card-filter my-4" data-bind="attr: { 'href': 'Index/' + Id() }">
                 <div class="card-body text-align-center subject-container cursor-pointer" data-bind="class: $parent.GetSubjectContainerBackground($index)">
                     <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-left-none">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <span class="card-label" data-bind="text: Name"></span>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     <div class="row">

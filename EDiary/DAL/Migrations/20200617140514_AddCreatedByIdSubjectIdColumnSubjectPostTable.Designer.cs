@@ -4,14 +4,16 @@ using DAL.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(EDiaryDbContext))]
-    partial class EDiaryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200617140514_AddCreatedByIdSubjectIdColumnSubjectPostTable")]
+    partial class AddCreatedByIdSubjectIdColumnSubjectPostTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,9 +156,6 @@ namespace DAL.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("JoinCode")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -229,7 +228,7 @@ namespace DAL.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubjectId")
+                    b.Property<int?>("SubjectId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -311,28 +310,6 @@ namespace DAL.Migrations
                     b.ToTable("TaskSubjectMapping");
                 });
 
-            modelBuilder.Entity("DAL.Entities.TeacherTaskMapping", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TeacherId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("TeacherTaskMappings");
-                });
-
             modelBuilder.Entity("DAL.Entities.UserScheculeEventMapping", b =>
                 {
                     b.Property<int>("Id")
@@ -384,7 +361,7 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("TaskId")
+                    b.Property<int?>("TaskId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -558,9 +535,7 @@ namespace DAL.Migrations
 
                     b.HasOne("DAL.Entities.Subject", "Subject")
                         .WithMany()
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SubjectId");
                 });
 
             modelBuilder.Entity("DAL.Entities.TaskFileMapping", b =>
@@ -596,19 +571,6 @@ namespace DAL.Migrations
                         .HasForeignKey("TaskId");
                 });
 
-            modelBuilder.Entity("DAL.Entities.TeacherTaskMapping", b =>
-                {
-                    b.HasOne("DAL.Entities.Task", "Task")
-                        .WithMany()
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Entities.ApplicationUser", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId");
-                });
-
             modelBuilder.Entity("DAL.Entities.UserScheculeEventMapping", b =>
                 {
                     b.HasOne("DAL.Entities.ScheduleEvent", "ScheduleEvent")
@@ -637,9 +599,7 @@ namespace DAL.Migrations
                 {
                     b.HasOne("DAL.Entities.Task", "Task")
                         .WithMany()
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TaskId");
 
                     b.HasOne("DAL.Entities.ApplicationUser", "User")
                         .WithMany()

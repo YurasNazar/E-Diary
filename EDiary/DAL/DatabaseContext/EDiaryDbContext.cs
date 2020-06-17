@@ -22,6 +22,7 @@ namespace DAL.DatabaseContext
         public DbSet<UserTaskMapping> UserTasksMapping { get; set; }
         public DbSet<TaskSubjectMapping> TaskSubjectMapping { get; set; }
         public DbSet<UserSubjectMapping> UserSubjectsMapping { get; set; }
+        public DbSet<TeacherTaskMapping> TeacherTaskMappings { get; set; }
         public DbSet<UserScheculeEventMapping> UserScheculeEventsMapping { get; set; }
     }
 }

@@ -9,5 +9,6 @@ namespace DAL.Entities
         public virtual ApplicationUser Owner { get; set; }
         public DateTime DateCreated { get; set; }
         public bool IsDeleted { get; set; }
+        public string JoinCode { get; set; }
     }
 }

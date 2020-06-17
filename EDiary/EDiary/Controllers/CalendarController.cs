@@ -36,8 +36,7 @@ namespace EDiary.Controllers
         public JsonResult CreateAppointment(CreateAppointmentViewModel subject)
         {
             var userId = User.GetLoggedInUserId<string>();
-
-            
+                    
 
             return CreateJsonResult(true);
         }

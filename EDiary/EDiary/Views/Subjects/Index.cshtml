@@ -1,21 +1,40 @@
 ﻿@model SubjectViewModel
 @inject UserManager<ApplicationUser> UserManager
 @{
-    var user = await UserManager.GetUserAsync(User);
     ViewBag.Title = "Subjects";
+
+    var user = await UserManager.GetUserAsync(User);
+
+    IList<string> userRoles = null;
+    var userRole = "";
+
+    if (user != null)
+    {
+        userRoles = await UserManager.GetRolesAsync(user);
+        userRole = userRoles.ToList().FirstOrDefault();
+    }
 }
 @section Scripts
 {
     <script src="~/js/app/datepicker.js"></script>
-    <script src="~/js/app/calendar.js"></script>
+    <script src="~/js/app/subjects.js"></script>
     <script src="~/lib/moment.js/moment.js"></script>
 }
 @section KnockoutContext {
     <script type="text/javascript">
         SubjectsManageViewModel.ContainerId = '#subjects';
+        SubjectsManageViewModel.JoinSubjectId = '#join-subject-template';
+        SubjectsManageViewModel.CreateTaskId = '#create-task-template';
+        SubjectsManageViewModel.TaskDeadlineId = '#task-deadline';
+        SubjectsManageViewModel.GetSubjectInfo = "@Html.Raw(Url.Action("GetSubjectInfo"))";
+        SubjectsManageViewModel.GetSubjectPosts = "@Html.Raw(Url.Action("GetSubjectPosts"))";
+        SubjectsManageViewModel.CreatePost = "@Html.Raw(Url.Action("CreatePost"))";
+        SubjectsManageViewModel.JoinSubject = "@Html.Raw(Url.Action("JoinSubject"))";
+        SubjectsManageViewModel.CreateSubjectTask = "@Html.Raw(Url.Action("CreateTask"))";
 
-        SubjectsManageViewModel.GetCalendarDayItemsUrl = "@Html.Raw(Url.Action("GetCalendarDayItems"))";
         SubjectsManageViewModel.SubjectList = @Html.Raw(JSONConverter.Encode(Model.SubjectList));
+        SubjectsManageViewModel.InitSubjectId = @Html.Raw(JSONConverter.Encode(Model.SubjectId));
+
         SubjectsManageViewModel.Init();
     </script>
 }
@@ -27,32 +46,42 @@
         </li>
         <li class="breadcrumb-item active">Subjects</li>
     </ol>
-    <div class="mb-3 page-title-header" @*data-bind="text: Subject"*@>Hi @user.FullName, here is your subjects</div>
+    <div class="mb-3 page-title-header">Hi @user.FullName, here is your subjects</div>
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <div class="card card-filter my-4">
+            <div class="card card-filter my-4" data-bind="visible: Subjects().length">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="list-group subject-list" data-bind="visible: ToDos().length > 0 && !Loading(), foreach: ToDos">
-                            <a href="#" class="list-group-item list-group-item-action subject-title">C# Programming</a>
-                            <a href="#" class="list-group-item list-group-item-action subject-title bg-blue-gradient">Web Design</a>
-                            <a href="#" class="list-group-item list-group-item-action subject-title">Network Security</a>
+                        <div class="list-group subject-list" data-bind="foreach: Subjects">
+                            <a href="#" class="list-group-item list-group-item-action subject-title" data-bind="class: Id() == $parent.SubjectItemBackground() ? 'bg-blue-gradient' : '', text: Name, click: $parent.ChangeSubject.bind(this)"></a>
                         </div>
                     </div>
                 </div>
             </div>
+            @if (userRole == "Student")
+            {
+                <button class="btn btn-lg btn-block add-create-button margin-bottom-20 mt-5" data-bind="click: OpenJoinSubjectModal">
+                    <i class="fas fa-file-signature add-create-button-icon"></i>Join Subject
+                </button>
+            }
+            @if (userRole == "Teacher")
+            {
+                <button class="btn btn-lg btn-block add-create-button margin-bottom-20 mt-5" data-bind="click: OpenCreateTaskModal">
+                    <i class="fas fa-file-signature add-create-button-icon"></i>Create Task
+                </button>
+            }
         </div>
-        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" data-bind="visible: Subjects().length">
             <div class="my-4 subject-nav">
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <a class="subject-nav-item subject-nav-item-link text-decoration-none" href="#">Course</a>
+                                <a class="subject-nav-item subject-nav-item-link text-decoration-none course" href="" data-bind="click: ChangeSubjectHeaderToCourse">Course</a>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <a class="subject-nav-item subject-nav-item-link text-decoration-none border-bottom-blue" href="#">People</a>
+                                <a class="subject-nav-item subject-nav-item-link text-decoration-none" href="" data-bind="click: ChangeSubjectHeaderToPeople">People</a>
                             </div>
                         </div>
                     </div>
@@ -60,315 +89,152 @@
                 </div>
             </div>
 
-            <!--People list-->
-            <div class="my-4 margin-bottom-100px subject-people-underline">
+            <div data-bind="visible: SubjectHeader() == 1">
+                <!--Teachers list-->
+                <div class="my-4 margin-bottom-100px subject-people-underline">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="subject-people subject-nav-item-link people-font-blue">Teachers</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div data-bind="foreach: SubjectTeachers">
+                    <div class="row margin-bottom-1">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row">
+                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                                    <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                                </div>
+                                <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                                    <div class="people-item" data-bind="text: FullName"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!---->
+                <!--Classmates list-->
+                <div class="my-4 subject-people-underline">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row margin-top-30px">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="subject-people subject-nav-item-link people-font-blue">Classmates</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div data-bind="foreach: SubjectPeople">
+                    <div class="row margin-bottom-1">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row">
+                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                                    <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                                </div>
+                                <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                                    <div class="people-item" data-bind="text: FullName"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!---->
+            </div>
+
+            <div data-bind="visible: SubjectHeader() == 0">
+                <!--Course body-->
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <div class="subject-people subject-nav-item-link people-font-blue">Teachers</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                        </div>
-                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                            <div class="people-item">Benjemin Spencer</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="my-4 subject-people-underline">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row margin-top-30px">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <div class="subject-people subject-nav-item-link people-font-blue">Classmates</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                        </div>
-                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                            <div class="people-item">Nazar Yuras</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                        </div>
-                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                            <div class="people-item">Oleg Gaba</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                        </div>
-                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                            <div class="people-item">Hugo Tierney</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Anita Booker</div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Anita Booker</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                        </div>
-                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                            <div class="people-item">Ahsan Byers</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                        </div>
-                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                            <div class="people-item">Володимир Ревура</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                        </div>
-                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                            <div class="people-item">Володимир Ревура</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                        </div>
-                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                            <div class="people-item">Володимир Ревура</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                        </div>
-                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                            <div class="people-item">Володимир Ревура</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                        </div>
-                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                            <div class="people-item">Володимир Ревура</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-bottom-1">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                        </div>
-                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                            <div class="people-item">Володимир Ревура</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <!--Course body-->
-            @*<div class="row" data-bind="with: Filter">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mx-auto">
                         <div class="card card-filter my-2">
                             <div class="card-body padding-bottom-20-imp">
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="form-label-group">
-                                            <textarea class="form-control height-100" id="share-course" placeholder="Share with course"></textarea>
+                                            <textarea class="form-control height-100" id="share-course" data-bind="value: PostDescription" placeholder="Share with course"></textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="offset-10">
-                                        <button class="btn btn-primary btn-block mark-as-complete-button pubish-button">Publish</button>
+                                        <button class="btn btn-primary btn-block mark-as-complete-button pubish-button" data-bind="click: NewPost">Publish</button>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
-            @*<div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card card-filter my-2">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                        <img class="subject-item-avatar subject-item-avatar-img" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                                    </div>
-                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-left-none">
-                                        <span class="subject-author-name">Benjemin Spencer</span>
-                                        <div class="subject-author-date-creation">28 March</div>
-                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right pad-right-none">
-                                        <a class="color-black" href=""><i class="fas fa-ellipsis-v"></i></a>
-                                    </div>
-                                </div>
-                                <div class="row mt-3 subject-item-body">
-                                    <span class="subject-item-body-text">
-                                        Benjemin Spencer invites you to a conference: Zoom.<br />
-                                        Topic: Conference Zoom CONSULTATION IS-21<br />
-                                        May 26, 2020 02:00 PM Kyiv<br /><br />
-
-                                        Connect Zoom<br />
-                                        https://us04web.zoom.us/j/4540328862?pwd=3eUWR9-cxU1sPt003g92V6u9WIH-jTYc<br />
-
-                                        Conference ID: 454 032 8862<br />
-                                        Password: it2020it
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
-            @*<div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card card-filter my-2">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                        <img class="subject-item-avatar subject-item-avatar-img" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                                    </div>
-                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-left-none">
-                                        <span class="subject-author-name">Nazar Yuras</span>
-                                        <div class="subject-author-date-creation">25 May</div>
-                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right pad-right-none">
-                                        <a class="color-black" href=""><i class="fas fa-ellipsis-v"></i></a>
-                                    </div>
-                                </div>
-                                <div class="row mt-3 subject-item-body">
-                                    <span class="subject-item-body-text">
-                                        New Post
-                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card card-filter my-2">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                        <img class="subject-item-avatar subject-item-avatar-img" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                <div data-bind="foreach: SubjectPosts">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card card-filter my-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                                            <img class="subject-item-avatar subject-item-avatar-img" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-left-none">
+                                            <span class="subject-author-name" data-bind="text: CreatedByFullName"></span>
+                                            <div class="subject-author-date-creation" data-bind="text: $parent.FormatDateCreated(DateCreated())"></div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right pad-right-none">
+                                            <a class="color-black" href=""><i class="fas fa-ellipsis-v"></i></a>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-left-none">
-                                        <span class="subject-author-name">Benjemin Spencer</span>
-                                        <div class="subject-author-date-creation">28 March</div>
+                                    <div class="row mt-3 subject-item-body">
+                                        <div class="subject-item-body-text" data-bind="text: Description"></div>
                                     </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right pad-right-none">
-                                        <a class="color-black" href=""><i class="fas fa-ellipsis-v"></i></a>
-                                    </div>
-                                </div>
-                                <div class="row mt-3 subject-item-body">
-                                    <span class="subject-item-body-text">
-                                        The report to laboratory works should include the technical task, a screenshot of a variant, conclusions
-                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>*@
-
-            @*<div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card card-filter my-2">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                        <img class="subject-item-avatar subject-item-avatar-img" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                                    </div>
-                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-left-none">
-                                        <span class="subject-author-name">Benjemin Spencer</span>
-                                        <div class="subject-author-date-creation">28 March</div>
-                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right pad-right-none">
-                                        <a class="color-black" href=""><i class="fas fa-ellipsis-v"></i></a>
-                                    </div>
-                                </div>
-                                <div class="row mt-3 subject-item-body">
-                                    <span class="subject-item-body-text">
-                                        В темі "Результати" опубліковані зведені результати успішності студентів з дисц. Економіка і бізнес".
-                                        За бажанням студентів завтра 15.05 може бути проведено залік.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
-            <!--Course body close-->
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<script type="text/html" id="join-subject-template">
+    <div class="bootbox-content" data-bind="with: JoinSubjectModel" style="display:none;">
+        <div class="form-group">
+            <label class="control-label">Join Code</label>
+            <input class="form-control create-subject-input" placeholder="Enter code to join subject" data-bind="value: JoinCode" required>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="create-task-template">
+    <div class="bootbox-content" data-bind="with: CreateTaskModel" style="display:none;">
+        <div class="form-group">
+            <label class="control-label">Name</label>
+            <input class="form-control create-subject-input" id="Name" placeholder="Enter task name" data-bind="value: Name" required>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Description</label>
+            <textarea class="form-control create-subject-textarea" placeholder="Enter task description" data-bind="value: Description" required></textarea>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Assessment</label>
+            <input class="form-control create-subject-input" placeholder="Enter assessment" data-bind="value: MaxAssessment" required>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Deadline</label>
+            <div class="relative">
+                <input id="task-deadline" type="text" class="form-control cursor-pointer" placeholder="Select a Date" data-bind="value: Deadline" data-format="mm/dd/yyyy">
+                <span class="ediary-datepicker cursor-pointer"><i class="fas fa-calendar-alt"></i></span>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    $(document).ready(function () {
+        $("a.subject-nav-item-link.course").addClass("border-bottom-blue");
+
+        $("a.subject-nav-item-link").click(function () {
+            $("a.subject-nav-item-link.border-bottom-blue").removeClass("border-bottom-blue");
+            $(this).addClass("border-bottom-blue");
+        });
+    });
+</script>

@@ -1,4 +1,5 @@
-﻿using DAL.Models;
+﻿using DAL.Entities;
+using DAL.Models;
 using System.Collections.Generic;
 
 namespace DAL.ViewModels
@@ -6,5 +7,7 @@ namespace DAL.ViewModels
     public class SubjectViewModel
     {
         public List<SubjectListItem> SubjectList { get; set; }
+
+        public int? SubjectId { get; set; }
     }
 }

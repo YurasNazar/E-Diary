@@ -34,12 +34,21 @@ Task.TaskViewModel = function () {
     self.Notes = ko.observableArray();
     self.TaskNote = ko.observable();
     self.Files = ko.observableArray();
+    self.TaskAssessment = ko.observable();
+    self.AssessmentInputDisabled = ko.observable();
+    self.MarkAsCompleteButtonVisible = ko.observable();
+    self.EvaluateButtonVisible = ko.observable();
+
+    self.Jopa = ko.observable(true);
 
     self.Init = function () {
         debugger;
         ko.mapping.fromJS(Task.TaskModel, {}, self);
         ko.mapping.fromJS(Task.TaskModel.TaskNotes, Task.Mapping.Notes, self.Notes);
         ko.mapping.fromJS(Task.TaskModel.TaskFiles, Task.Mapping.Files, self.Files);
+        self.AssessmentInputDisabled(self.StatusId() == Constants.Numbers.TaskStatus.Assessed ? true : false);
+        self.EvaluateButtonVisible(self.StatusId() == Constants.Numbers.TaskStatus.Completed ? true : false);
+        self.MarkAsCompleteButtonVisible(self.StatusId() == Constants.Numbers.TaskStatus.Proposed ? true : false);
     };
 
     self.FormatMaxAssessment = function (assessment) {
@@ -73,32 +82,30 @@ Task.TaskViewModel = function () {
         }
     };
 
-    self.MarkAsCompleteButtonVisible = function () {
-        return self.StatusId() == Constants.Numbers.TaskStatus.Proposed;
-    }
+    self.Reload = function () {
+        window.location.href = "https://localhost:44360/Task/GetTask/" + self.TaskId();
+    };
 
-    self.UploadFilesButtonVisible = function () {
-        return self.StatusId() == Constants.Numbers.TaskStatus.Proposed;
-    }
+    self.Evaluate = function () {
+        var data = {
+            taskId: self.TaskId(),
+            taskAssessment: self.TaskAssessment()
+        };
+
+        $.ajax({
+            url: Task.Evaluate,
+            type: "POST",
+            dataType: "json",
+            data: data,
+        }).done(function (result) {
+            if (result && result.success) {
+                self.Reload();
+            }
+        });
+    };
 
     self.MarkAsComplete = function () {
         $("#file-upload-input").trigger("click");
-        //var data = {
-        //    fileModels: ko.mapping.toJS(self.Files, {}),
-        //    taskId: self.TaskId()
-        //};
-
-        //$.ajax({
-        //    url: Task.MarkAsComplete,
-        //    type: "POST",
-        //    dataType: "json",
-        //    data: data,
-        //}).done(function (result) {
-        //    if (result && result.success) {
-        //        ko.mapping.fromJS(result.data.TaskNotes, Task.Mapping.Notes, self.Notes);
-        //    }
-        //});
-
     };
 
     self.GetTaskNotes = function () {

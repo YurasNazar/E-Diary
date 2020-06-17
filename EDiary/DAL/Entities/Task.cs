@@ -9,7 +9,9 @@ namespace DAL.Entities
         public int MaxAssessment { get; set; }
         public int? Assessment { get; set; }
         public int StatusId { get; set; }
+        public string CreatedById { get; set; }
         public virtual ApplicationUser CreatedBy { get; set; }
+        public int SubjectId { get; set; }
         public virtual Subject Subject { get; set; }
         public DateTime DeadLine { get; set; }
         public DateTime DateCreated { get; set; }

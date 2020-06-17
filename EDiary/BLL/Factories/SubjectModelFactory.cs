@@ -39,11 +39,28 @@ namespace BLL.Factories
             return subjectsViewModel;
         }
 
+        public SubjectInfoModel PrepareSubjectInfoModel(int subjectId)
+        {
+            var subjectPostsPagedList = _subjectService.SearchSubjectPosts(subjectId);
+            var subjectPeoplePagedList = _subjectService.SearchSubjectPeople(subjectId);
+            var subjectTeachersPagedList = _subjectService.SearchSubjectTeachers(subjectId);
+
+            var subjectInfoModel = new SubjectInfoModel
+            {
+                SubjectPosts = subjectPostsPagedList.Select(PreparePostModel).ToList(),
+                SubjectPeople = subjectPeoplePagedList.Select(PreparePeopleModel).ToList(),
+                SubjectTeachers = subjectTeachersPagedList.Select(PrepareTeachersModel).ToList()
+            };
+
+            return subjectInfoModel;
+        }
+
         public SubjectListItem PrepareSubjectModel(Subject subject)
         {
             return new SubjectListItem
             {
-                Name = subject.Name
+                Name = subject.Name,
+                Id = subject.Id
             };
         }
 
@@ -54,7 +71,8 @@ namespace BLL.Factories
                 Name = subjectViewModel.Name,
                 IsDeleted = false,
                 OwnerId = userId,
-                DateCreated = DateTime.UtcNow
+                DateCreated = DateTime.UtcNow,
+                JoinCode = subjectViewModel.JoinCode
             };
         }
 
@@ -73,6 +91,51 @@ namespace BLL.Factories
             {
                 UserId = userId,
                 SubjectId = subjectId
+            };
+        }
+
+        public Post PreparePostModel(SubjectPost post)
+        {
+            return new Post
+            {
+                CreatedByFullName = post.CreatedBy.FullName,
+                DateCreated = post.DateCreated,
+                Description = post.Description
+            };
+        }
+        public Person PreparePeopleModel(UserSubjectMapping userSubject)
+        {
+            return new Person
+            {
+                FullName = userSubject.User.FullName,
+            };
+        }
+
+        public Person PrepareTeachersModel(Subject subject)
+        {
+            return new Person
+            {
+                FullName = subject.Owner.FullName,
+            };
+        }
+
+        public SubjectPost PrepareSubjectPostModelForInsert(int subjectId, string description, string userId)
+        {
+            return new SubjectPost
+            {
+                CreatedById = userId,
+                Description = description,
+                SubjectId = subjectId,
+                DateCreated = DateTime.UtcNow,
+            };
+        }
+
+        public UserSubjectMapping PrepareUserSubjectModelForInsert(int subjectId, string userId)
+        {
+            return new UserSubjectMapping
+            {
+               UserId = userId,
+               SubjectId = subjectId
             };
         }
     }

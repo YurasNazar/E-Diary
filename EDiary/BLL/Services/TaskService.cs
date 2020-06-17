@@ -11,15 +11,22 @@ namespace BLL.Services
     {
         private readonly IRepository<Task> _taskRepository;
         private readonly IRepository<TaskNote> _taskNotesRepository;
+        private readonly IRepository<UserTaskMapping> _userTaskMappingRepository;
         private readonly IRepository<TaskFileMapping> _taskFileMappingRepository;
+        private readonly IRepository<TeacherTaskMapping> _teacherTaskMappingRepository;
+
 
         public TaskService(IRepository<Task> taskRepository,
                            IRepository<TaskNote> taskNotesRepository,
-                           IRepository<TaskFileMapping> taskFileMappingRepository)
+                           IRepository<TaskFileMapping> taskFileMappingRepository,
+                           IRepository<UserTaskMapping> userTaskMappingRepository,
+                           IRepository<TeacherTaskMapping> teacherTaskMappingRepository)
         {
             _taskRepository = taskRepository;
             _taskNotesRepository = taskNotesRepository;
+            _userTaskMappingRepository = userTaskMappingRepository;
             _taskFileMappingRepository = taskFileMappingRepository;
+            _teacherTaskMappingRepository = teacherTaskMappingRepository;
         }
 
         public Task GetById(int id)
@@ -35,6 +42,16 @@ namespace BLL.Services
         public void IntertTaskNote(TaskNote taskNote)
         {
             _taskNotesRepository.Insert(taskNote);
+        }
+
+        public void CreateTask(Task task)
+        {
+            _taskRepository.Insert(task);
+        }
+
+        public void CreateUserTaskMapping(UserTaskMapping userTaskMapping)
+        {
+            _userTaskMappingRepository.Insert(userTaskMapping);
         }
 
         public IPagedList<TaskFileMapping> SearchTaskFiles(int taskId)
@@ -74,6 +91,11 @@ namespace BLL.Services
             query = query.Where(x => x.TaskId == taskId);
 
             return query;
+        }
+
+        public void CreateTeacherTaskMapping(TeacherTaskMapping teacherTaskMapping)
+        {
+            _teacherTaskMappingRepository.Insert(teacherTaskMapping);
         }
     }
 }

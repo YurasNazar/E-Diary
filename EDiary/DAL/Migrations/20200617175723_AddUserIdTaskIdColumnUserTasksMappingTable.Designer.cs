@@ -4,14 +4,16 @@ using DAL.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(EDiaryDbContext))]
-    partial class EDiaryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200617175723_AddUserIdTaskIdColumnUserTasksMappingTable")]
+    partial class AddUserIdTaskIdColumnUserTasksMappingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -311,28 +313,6 @@ namespace DAL.Migrations
                     b.ToTable("TaskSubjectMapping");
                 });
 
-            modelBuilder.Entity("DAL.Entities.TeacherTaskMapping", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TeacherId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("TeacherTaskMappings");
-                });
-
             modelBuilder.Entity("DAL.Entities.UserScheculeEventMapping", b =>
                 {
                     b.Property<int>("Id")
@@ -594,19 +574,6 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Entities.Task", "Task")
                         .WithMany()
                         .HasForeignKey("TaskId");
-                });
-
-            modelBuilder.Entity("DAL.Entities.TeacherTaskMapping", b =>
-                {
-                    b.HasOne("DAL.Entities.Task", "Task")
-                        .WithMany()
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Entities.ApplicationUser", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId");
                 });
 
             modelBuilder.Entity("DAL.Entities.UserScheculeEventMapping", b =>

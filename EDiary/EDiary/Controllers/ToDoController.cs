@@ -1,6 +1,7 @@
 ﻿using BLL.Factories;
 using DAL.Entities;
 using DAL.Models;
+using DAL.ViewModels;
 using EDiary.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,16 @@ namespace EDiary.Controllers
         public IActionResult Index(ToDoFilterModel filter, SimplePagerModel pager)
         {
             var userId = User.GetLoggedInUserId<string>();
-            var model = _toDoModelFactory.PrepareToDoViewModel(filter, pager, userId);
+            var isTeacher = User.IsTeacher();
+
+            var model = new ToDoViewModel();
+
+            if (isTeacher) {
+                model = _toDoModelFactory.PrepareTeacherToDoViewModel(filter, pager, userId);
+            }
+            else {
+                model = _toDoModelFactory.PrepareToDoViewModel(filter, pager, userId);
+            }
 
             return View(model);
         }
