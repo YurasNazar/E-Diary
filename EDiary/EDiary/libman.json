@@ -37,6 +37,10 @@
     {
       "library": "bootbox.js@5.4.0",
       "destination": "wwwroot/lib/bootbox.js/"
+    },
+    {
+      "library": "bootstrap-datetimepicker@4.17.47",
+      "destination": "wwwroot/bootstrap-datetimepicker/"
     }
   ]
 }

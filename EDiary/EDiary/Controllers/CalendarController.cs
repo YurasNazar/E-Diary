@@ -1,4 +1,5 @@
 ﻿using BLL.Factories;
+using DAL.ViewModels;
 using EDiary.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -29,6 +30,16 @@ namespace EDiary.Controllers
             {
                 model.CalendarEvents,
             });
+        }
+
+        [HttpPost]
+        public JsonResult CreateAppointment(CreateAppointmentViewModel subject)
+        {
+            var userId = User.GetLoggedInUserId<string>();
+
+            
+
+            return CreateJsonResult(true);
         }
     }
 }

@@ -46,5 +46,15 @@ namespace BLL.Factories
                 Description = userEventMapping.ScheduleEvent.Description,
             };
         }
+
+        public ScheduleEvent PrepareScheduleEventModel(CreateAppointmentViewModel appointmentViewModel, string userId = "")
+        {
+            return new ScheduleEvent
+            {
+                Title = appointmentViewModel.Theme,
+                Description = appointmentViewModel.Description,
+                Location = appointmentViewModel.Location
+            };
+        }
     }
 }

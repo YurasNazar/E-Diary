@@ -1,8 +1,25 @@
-﻿@inject UserManager<ApplicationUser> UserManager
+﻿@model SubjectViewModel
+@inject UserManager<ApplicationUser> UserManager
 @{
     var user = await UserManager.GetUserAsync(User);
     ViewBag.Title = "Subjects";
 }
+@section Scripts
+{
+    <script src="~/js/app/datepicker.js"></script>
+    <script src="~/js/app/calendar.js"></script>
+    <script src="~/lib/moment.js/moment.js"></script>
+}
+@section KnockoutContext {
+    <script type="text/javascript">
+        SubjectsManageViewModel.ContainerId = '#subjects';
+
+        SubjectsManageViewModel.GetCalendarDayItemsUrl = "@Html.Raw(Url.Action("GetCalendarDayItems"))";
+        SubjectsManageViewModel.SubjectList = @Html.Raw(JSONConverter.Encode(Model.SubjectList));
+        SubjectsManageViewModel.Init();
+    </script>
+}
+
 <div class="container flex-card" id="subjects">
     <ol class="breadcrumb mt-4 mb-3">
         <li class="breadcrumb-item">
@@ -45,202 +62,202 @@
 
             <!--People list-->
             <div class="my-4 margin-bottom-100px subject-people-underline">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="subject-people subject-nav-item-link people-font-blue">Teachers</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-bottom-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                    <div class="subject-people subject-nav-item-link people-font-blue">Teachers</div>
-                                </div>
-                            </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                            <div class="people-item">Benjemin Spencer</div>
                         </div>
                     </div>
                 </div>
-                <div class="row margin-bottom-1">
+            </div>
+            <div class="my-4 subject-people-underline">
+                <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                            </div>
-                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Benjemin Spencer</div>
+                        <div class="row margin-top-30px">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="subject-people subject-nav-item-link people-font-blue">Classmates</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="my-4 subject-people-underline">
+            </div>
+            <div class="row margin-bottom-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="row margin-top-30px">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                    <div class="subject-people subject-nav-item-link people-font-blue">Classmates</div>
-                                </div>
-                            </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                            <div class="people-item">Nazar Yuras</div>
                         </div>
                     </div>
                 </div>
-                <div class="row margin-bottom-1">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            </div>
+            <div class="row margin-bottom-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                            <div class="people-item">Oleg Gaba</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-bottom-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                            <div class="people-item">Hugo Tierney</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-bottom-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                        </div>
                         <div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                            </div>
                             <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Nazar Yuras</div>
+                                <div class="people-item">Anita Booker</div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row margin-bottom-1">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                            </div>
                             <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Oleg Gaba</div>
+                                <div class="people-item">Anita Booker</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row margin-bottom-1">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                            </div>
-                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Hugo Tierney</div>
-                            </div>
+            </div>
+            <div class="row margin-bottom-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                            <div class="people-item">Ahsan Byers</div>
                         </div>
                     </div>
                 </div>
-                <div class="row margin-bottom-1">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                    <div class="people-item">Anita Booker</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                    <div class="people-item">Anita Booker</div>
-                                </div>
-                            </div>
+            </div>
+            <div class="row margin-bottom-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                            <div class="people-item">Володимир Ревура</div>
                         </div>
                     </div>
                 </div>
-                <div class="row margin-bottom-1">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                            </div>
-                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Ahsan Byers</div>
-                            </div>
+            </div>
+            <div class="row margin-bottom-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                            <div class="people-item">Володимир Ревура</div>
                         </div>
                     </div>
                 </div>
-                <div class="row margin-bottom-1">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                            </div>
-                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Володимир Ревура</div>
-                            </div>
+            </div>
+            <div class="row margin-bottom-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                            <div class="people-item">Володимир Ревура</div>
                         </div>
                     </div>
                 </div>
-                <div class="row margin-bottom-1">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                            </div>
-                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Володимир Ревура</div>
-                            </div>
+            </div>
+            <div class="row margin-bottom-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                            <div class="people-item">Володимир Ревура</div>
                         </div>
                     </div>
                 </div>
-                <div class="row margin-bottom-1">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                            </div>
-                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Володимир Ревура</div>
-                            </div>
+            </div>
+            <div class="row margin-bottom-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                            <div class="people-item">Володимир Ревура</div>
                         </div>
                     </div>
                 </div>
-                <div class="row margin-bottom-1">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                            </div>
-                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Володимир Ревура</div>
-                            </div>
+            </div>
+            <div class="row margin-bottom-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                            <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
+                            <div class="people-item">Володимир Ревура</div>
                         </div>
                     </div>
                 </div>
-                <div class="row margin-bottom-1">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                            </div>
-                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Володимир Ревура</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row margin-bottom-1">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                <img class="subject-item-avatar subject-item-avatar-img people-list-avatar" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
-                            </div>
-                            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 pad-left-none">
-                                <div class="people-item">Володимир Ревура</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div>
 
 
 
             <!--Course body-->
             @*<div class="row" data-bind="with: Filter">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mx-auto">
-                    <div class="card card-filter my-2">
-                        <div class="card-body padding-bottom-20-imp">
-                            <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="form-label-group">
-                                        <textarea class="form-control height-100" id="share-course" placeholder="Share with course"></textarea>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mx-auto">
+                        <div class="card card-filter my-2">
+                            <div class="card-body padding-bottom-20-imp">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-label-group">
+                                            <textarea class="form-control height-100" id="share-course" placeholder="Share with course"></textarea>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="offset-10">
-                                    <button class="btn btn-primary btn-block mark-as-complete-button pubish-button">Publish</button>
+                                <div class="row">
+                                    <div class="offset-10">
+                                        <button class="btn btn-primary btn-block mark-as-complete-button pubish-button">Publish</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>*@
+                </div>*@
             @*<div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card card-filter my-2">
@@ -275,55 +292,55 @@
                     </div>
                 </div>*@
             @*<div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card card-filter my-2">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                    <img class="subject-item-avatar subject-item-avatar-img" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card card-filter my-2">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                                        <img class="subject-item-avatar subject-item-avatar-img" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-left-none">
+                                        <span class="subject-author-name">Nazar Yuras</span>
+                                        <div class="subject-author-date-creation">25 May</div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right pad-right-none">
+                                        <a class="color-black" href=""><i class="fas fa-ellipsis-v"></i></a>
+                                    </div>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-left-none">
-                                    <span class="subject-author-name">Nazar Yuras</span>
-                                    <div class="subject-author-date-creation">25 May</div>
+                                <div class="row mt-3 subject-item-body">
+                                    <span class="subject-item-body-text">
+                                        New Post
+                                    </span>
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right pad-right-none">
-                                    <a class="color-black" href=""><i class="fas fa-ellipsis-v"></i></a>
-                                </div>
-                            </div>
-                            <div class="row mt-3 subject-item-body">
-                                <span class="subject-item-body-text">
-                                    New Post
-                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card card-filter my-2">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
-                                    <img class="subject-item-avatar subject-item-avatar-img" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card card-filter my-2">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 pad-left-none">
+                                        <img class="subject-item-avatar subject-item-avatar-img" aria-hidden="true" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s40-c-fbw=1/photo.jpg">
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-left-none">
+                                        <span class="subject-author-name">Benjemin Spencer</span>
+                                        <div class="subject-author-date-creation">28 March</div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right pad-right-none">
+                                        <a class="color-black" href=""><i class="fas fa-ellipsis-v"></i></a>
+                                    </div>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-left-none">
-                                    <span class="subject-author-name">Benjemin Spencer</span>
-                                    <div class="subject-author-date-creation">28 March</div>
+                                <div class="row mt-3 subject-item-body">
+                                    <span class="subject-item-body-text">
+                                        The report to laboratory works should include the technical task, a screenshot of a variant, conclusions
+                                    </span>
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right pad-right-none">
-                                    <a class="color-black" href=""><i class="fas fa-ellipsis-v"></i></a>
-                                </div>
-                            </div>
-                            <div class="row mt-3 subject-item-body">
-                                <span class="subject-item-body-text">
-                                    The report to laboratory works should include the technical task, a screenshot of a variant, conclusions
-                                </span>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>*@
+                </div>*@
 
             @*<div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

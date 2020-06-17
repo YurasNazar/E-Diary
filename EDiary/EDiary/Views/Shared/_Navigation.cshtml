@@ -41,10 +41,20 @@
                             <a class="nav-link text-dark padding-0" asp-controller="ToDo" asp-action="Index">Tasks</a>
                         </li>
                     }
-                    <li class="nav-item text-align-center">
-                        <i class="fas fa-book"></i>
-                        <a class="nav-link text-dark padding-0" asp-controller="Subjects" asp-action="Index">Subjects</a>
-                    </li>
+                    @if (userRole == "Student")
+                    {
+                        <li class="nav-item text-align-center">
+                            <i class="fas fa-th-list"></i>
+                            <a class="nav-link text-dark padding-0" asp-controller="Subjects" asp-action="Index">Subjects</a>
+                        </li>
+                    }
+                    @if (userRole == "Teacher")
+                    {
+                        <li class="nav-item text-align-center">
+                            <i class="fas fa-th-list"></i>
+                            <a class="nav-link text-dark padding-0" asp-controller="Subjects" asp-action="TeacherSubjectList">Subjects</a>
+                        </li>
+                    }
                     <li class="nav-item text-align-center margin-left-1-5">
                         <i class="fas fa-user-tie"></i>
                         <a class="nav-link text-dark padding-0" href="#" id="userActionNavbar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@user.FullName</a>

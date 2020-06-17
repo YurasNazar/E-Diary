@@ -39,6 +39,8 @@ namespace EDiary
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IFileModelFactory, FileModelFactory>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<ISubjectModelFactory, SubjectModelFactory>();
+            services.AddScoped<ISubjectService, SubjectService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
 

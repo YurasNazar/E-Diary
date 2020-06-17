@@ -3,6 +3,7 @@
 }
 @section Scripts
 {
+
     <script src="~/js/app/datepicker.js"></script>
     <script src="~/js/app/calendar.js"></script>
     <script src="~/lib/moment.js/moment.js"></script>
@@ -10,7 +11,14 @@
 @section KnockoutContext {
     <script type="text/javascript">
         CalendarDayItemsList.ContainerId = '#calendar';
+        CalendarDayItemsList.BootBoxContainerId = '#create-appointment-template';
+        CalendarDayItemsList.AppointmentDateId = '#appointment-date';
+        CalendarDayItemsList.AppointmentDateFromId = '#appointment-date-from';
+        CalendarDayItemsList.AppointmentDateToId = '#appointment-date-to';
+
         CalendarDayItemsList.GetCalendarDayItemsUrl = "@Html.Raw(Url.Action("GetCalendarDayItems"))";
+        CalendarDayItemsList.CreateAppointmentUrl = "@Html.Raw(Url.Action("CreateAppointment"))";
+
         CalendarDayItemsList.Init();
     </script>
 }
@@ -32,7 +40,7 @@
             </div>
         </div>
         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 pull-right">
-            <button class="btn btn-lg add-create-button margin-bottom-20" id="bootbox">
+            <button class="btn btn-lg add-create-button margin-bottom-20" data-bind="click: OpenCreateAppointmentModal">
                 <i class="fas fa-plus add-create-button-icon"></i> Add new appointment
             </button>
         </div>
@@ -57,74 +65,54 @@
     <div class="center" data-bind="visible: CalendarDayItems().length === 0 && !Loading()">
         <p class="list-empty-text"> You don't have any items of &nbsp;</p><p class="list-empty-text" data-bind="text: FormattedCalendarDay"></p><p class="list-empty-text">&nbsp;Enjoy your day!</p>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-    <div class="bootbox-content" style="display:none;">
-        <div class="form-group">
-            <label class="control-label">Theme</label>
-            <input class="form-control create-subject-input" placeholder="Enter appointment theme" required>
-        </div>
-        <div class="form-group">
-            <label class="control-label">Description</label>
-            <textarea class="form-control create-subject-textarea" placeholder="Enter appointment description" required></textarea>
-        </div>
-        <div class="form-group">
-            <label class="control-label">Subject</label>
-            <input class="form-control create-subject-input" placeholder="Enter subject name" required>
-        </div>
-        <div class="form-group">
-            <label class="control-label">Location</label>
-            <input class="form-control create-subject-input" placeholder="Enter appointment location" required>
-        </div>
-        <div class="form-group">
-            <label class="control-label">Date and Time</label>
-            <div class="relative">
-                <input id="new-date" type="text" class="form-control cursor-pointer" placeholder="Select a Date" data-format="mm/dd/yyyy">
-                <span class="ediary-datepicker cursor-pointer"><i class="fas fa-calendar-alt"></i></span>
+    <script type="text/html" id="create-appointment-template">
+        <div class="bootbox-content" data-bind="with: CreateAppointmentModel" style="display:none;">
+            <div class="form-group">
+                <label class="control-label">Theme</label>
+                <input class="form-control create-subject-input" placeholder="Enter appointment theme" data-bind="value: Theme" required>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Description</label>
+                <textarea class="form-control create-subject-textarea" placeholder="Enter appointment description" data-bind="value: Description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Subject</label>
+                <input class="form-control create-subject-input" placeholder="Enter subject name" data-bind="value: SubjectName" required>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Location</label>
+                <input class="form-control create-subject-input" placeholder="Enter appointment location" data-bind="value: Location" required>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Date</label>
+                <div class="relative">
+                    <input id="appointment-date" type="text" class="form-control cursor-pointer" placeholder="Select a Date" data-bind="value: AppointmentDate" data-format="mm/dd/yyyy">
+                    <span class="ediary-datepicker cursor-pointer"><i class="fas fa-calendar-alt"></i></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">From</label>
+                <div class="relative">
+                    <input id="appointment-date-from" type="text" class="form-control cursor-pointer" placeholder="From" data-bind="value: AppointmentDateFrom">
+                    <span class="ediary-datepicker cursor-pointer"><i class="fas fa-calendar-alt"></i></span>
+                </div>
+            </div>
+            @*<div class="form-group">
+                    <div class="input-group date">
+                        <input type="text" class="form-control" id="appointment-date-from" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                </div>*@
+            <div class="form-group">
+                <label class="control-label">To</label>
+                <div class="relative">
+                    <input id="appointment-date-to" type="text" class="form-control cursor-pointer" placeholder="To" data-bind="value: AppointmentDateTo">
+                    <span class="ediary-datepicker cursor-pointer"><i class="fas fa-calendar-alt"></i></span>
+                </div>
             </div>
         </div>
-    </div>
-
-    <script>
-        $(document).ready(function () {
-            $("#bootbox").on("click", function (event) {
-                var modal = bootbox.dialog({
-                    message: $(".bootbox-content").html(),
-                    title: "New Appointment",
-                    buttons: [
-                        {
-                            label: "Create",
-                            className: "btn btn-primary pull-left",
-                            callback: function () {
-                                return false;
-                            }
-                        },
-                        {
-                            label: "Close",
-                            className: "btn btn-default pull-left",
-                            callback: function () {
-                                console.log("just do something on close");
-                            }
-                        }
-                    ],
-                    show: false,
-                    onEscape: function () {
-                        modal.modal("hide");
-                    }
-                });
-
-                modal.modal("show");
-            });
-        });
     </script>
 </div>
 

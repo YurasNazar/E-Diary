@@ -1,6 +1,7 @@
 ﻿var DateTimeFormat = DateTimeFormat || {};
 var Constants = Constants || {};
 var Actions = Actions || {};
+var Functions = Functions || {};
 
 var scrollToTop = function () {
     $(window).scrollTop(0);
@@ -39,6 +40,20 @@ Actions.Type = {
 var FileModel = function (name, type) {
     this.Name = name;
     this.Type = type;
+};
+
+Functions.ApplyDatePicker = function (element) {
+    element.datepicker({
+        todayHighlight: true,
+        orientation: "bottom left",
+        format: "mm/dd/yyyy",
+    });
+};
+
+Functions.ApplyTimePicker = function (element) {
+    element.datetimepicker({
+        format: 'LT'
+    });
 };
 
 ko.bindingHandlers.DatePicker = {
