@@ -1,5 +1,0 @@
-Bug #58507 [SoW - Stt] Supplier branch name isn't display correctly
-Bug #58512 [SoW - Req] Incorrect date information in case of view Pending acceptance Requirement on Supplier area
-Bug #58514 [SoW - Req] Missing placeholder text in case of values are blank 
-Bug #58530 [SoW - Prp] Proposal with 'Unsuccessful' status isn't read-only
-Bug #58535 [SoW -Req] Incorrect extra asterisk is displayed for ‘Customer’ in case of view Requirement

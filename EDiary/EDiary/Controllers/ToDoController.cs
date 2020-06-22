@@ -41,7 +41,18 @@ namespace EDiary.Controllers
         public JsonResult GetToDos(ToDoFilterModel filter, SimplePagerModel pager)
         {
             var userId = User.GetLoggedInUserId<string>();
-            var model = _toDoModelFactory.PrepareToDoViewModel(filter, pager, userId);
+            var isTeacher = User.IsTeacher();
+
+            var model = new ToDoViewModel();
+
+            if (isTeacher)
+            {
+                model = _toDoModelFactory.PrepareTeacherToDoViewModel(filter, pager, userId);
+            }
+            else
+            {
+                model = _toDoModelFactory.PrepareToDoViewModel(filter, pager, userId);
+            }
 
             return CreateJsonResult(true, new
             {

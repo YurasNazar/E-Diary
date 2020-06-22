@@ -79,7 +79,7 @@
                             <i class="fas fa-file"></i>
                         </div>
                         <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10 pad-left-none">
-                            <div data-bind="text: Name"></div>
+                            <a data-bind="text: Name, attr: { 'href': '@Url.Action("Download", "Task")?name=' + Name() }" ></a>
                         </div>
                     </div>
                     <div class="row mt-3">

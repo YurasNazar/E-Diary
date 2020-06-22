@@ -14,5 +14,6 @@ namespace BLL.Interfaces
         public void CreateTeacherTaskMapping(TeacherTaskMapping userTaskMapping);
         public IPagedList<TaskNote> SearchTaskNotes(int taskId, string userId = "");
         public IPagedList<TaskFileMapping> SearchTaskFiles(int taskId);
+        public string GetContentType(string path);
     }
 }

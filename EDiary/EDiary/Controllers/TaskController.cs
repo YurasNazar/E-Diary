@@ -105,6 +105,24 @@ namespace EDiary.Controllers
             return RedirectToAction("GetTask", "Task", new { id = task.Id });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Download(string name)
+        {
+            if (name == null)
+                return Content("filename not present");
+
+            var filePath = "/files/" + name;
+            var path = _appEnvironment.WebRootPath + filePath;
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, _taskService.GetContentType(path), Path.GetFileName(path));
+        }
+
         [HttpPost]
         public JsonResult Evaluate(int taskId, int taskAssessment)
         {
